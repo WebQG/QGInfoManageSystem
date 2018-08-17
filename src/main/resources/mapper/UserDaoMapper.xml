@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qg.www.dao.UserDao">
-    <resultMap id="BaseResultMap" type="com.qg.www.models.User">
-        <id column="ID" jdbcType="INT" property="userId"/>
+  <resultMap id="BaseResultMap" type="com.qg.www.models.User">
+        <id column="ID" jdbcType="INTEGER" property="userId"/>
         <result column="username" jdbcType="VARCHAR" property="userName"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="privilege" jdbcType="INT" property="privilege"/>
-        <result column="status" jdbcType="INT" property="status"/>
+        <result column="privilege" jdbcType="INTEGER" property="privilege"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
     </resultMap>
 
-    <select id="isExist" resultType="int">
+    <select id="isExist" resultType="INTEGER">
         SELECT user_id FROM user WHERE username = #{userName};
     </select>
 
     <insert id="register">
-        INSERT user (user_name, password, name, status, privilege) VALUES (#{userName}, #{password}, #{name}, 0, 1);
+        INSERT into user (user_name, password, name, status, privilege) VALUES (#{userName}, #{password}, #{name}, 0, 1);
     </insert>
 
-    <select id="login" resultType="int">
-        SELECT user_id FROM user WHERE username = #{userName} AND password = #{password} AND status = 1;
+    <select id="login" resultType="com.qg.www.models.User">
+        SELECT * FROM user WHERE username = #{userName} AND password = #{password} AND status = 1;
     </select>
 
-    <update id="check">
-        UPDATE user SET status = #{passOrNot} FROM username = #{userName};
+    <update id="review">
+        UPDATE user SET status = #{passOrNot} WHERE username = #{userName};
     </update>
 
     <select id="getPrivilegeById">

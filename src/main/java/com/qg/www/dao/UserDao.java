@@ -2,6 +2,7 @@ package com.qg.www.dao;
 
 
 import com.qg.www.dtos.RequestData;
+import com.qg.www.models.User;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -30,7 +31,7 @@ public interface UserDao {
      * @param requestData 用户名、用户密码
      * @return 1：存在 0：不存在
      */
-    int login(RequestData requestData);
+    User login(RequestData requestData);
 
     /**
      * 审核用户注册
@@ -38,7 +39,7 @@ public interface UserDao {
      * @param passOrNot 是否通过注册 1：通过 0：不通过
      * @return 1：更改成功 0：更改失败
      */
-    int check(@Param("userName") String userName, @Param("passOrNot") int passOrNot);
+    int review(@Param("userName") String userName, @Param("passOrNot") int passOrNot);
 
     int getPrivilegeById(@Param("userId") int userId);
 

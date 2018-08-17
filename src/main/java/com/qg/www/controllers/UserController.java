@@ -1,8 +1,12 @@
 package com.qg.www.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.qg.www.dtos.RequestData;
+import com.qg.www.dtos.ResponseData;
+import com.qg.www.service.UserService;
+import com.qg.www.service.impl.UserServiceImpl;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author net
@@ -13,4 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 @CrossOrigin
 public class UserController {
+    @Resource
+    private UserServiceImpl userService;
+    /**
+     *用户注册；
+     * @param data 用户注册的基本信息；
+     * @return 状态码；
+     */
+    @PostMapping("/register")
+    public ResponseData userRegister(@RequestBody RequestData data){
+        System.out.println("收到请求");
+        return userService.userRegister(data);
+    }
 }

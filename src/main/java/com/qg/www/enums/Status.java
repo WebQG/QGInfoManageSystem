@@ -29,6 +29,19 @@ public enum Status {
     /**
      * 信息导入导出失败
      */
+    INFO_SOLVE_ERROR("6"),
+    /**
+     * 服务器出现故障
+     */
+    SERVER_HAPPEN_ERROR("7"),
+    /**
+     * 信息修改失败
+     */
+    INFO_MODIFY_ERROR("8"),
+    /**
+     * 数据格式错误
+     */
+    DATA_FORMAT_ERROR("9")
     ;
 
     private String status;

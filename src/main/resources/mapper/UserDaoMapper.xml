@@ -9,4 +9,21 @@
         <result column="status" jdbcType="INT" property="status"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
     </resultMap>
+
+    <select id="isExist" resultType="int">
+        SELECT user_id FROM user WHERE username = #{userName};
+    </select>
+
+    <insert id="register">
+        INSERT user (user_name, password, name, status) VALUES (#{userName}, #{password}, #{name}, 0)
+    </insert>
+
+    <select id="login" resultType="int">
+        SELECT user_id FROM user WHERE username = #{userName} AND password = #{password} AND status = 1;
+    </select>
+
+    <update id="check">
+        UPDATE user SET status = #{passOrNot} FROM username = #{userName};
+    </update>
+
 </mapper>

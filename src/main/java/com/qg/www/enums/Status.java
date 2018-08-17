@@ -21,7 +21,7 @@ public enum Status {
     /**
      * 账户不存在
      */
-    ACCOUNT_NOT_EXIT("4"),
+    ACCOUNT_NOT_EXIST("4"),
     /**
      * 密码错误
      */

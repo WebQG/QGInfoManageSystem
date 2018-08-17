@@ -1,9 +1,12 @@
 package com.qg.www.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.qg.www.models.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author net
@@ -27,4 +30,8 @@ public class ResponseData {
      * 用户的名字
      */
     private String name;
+    /**
+     * 用户列表；
+     */
+    private List<User> userList;
 }

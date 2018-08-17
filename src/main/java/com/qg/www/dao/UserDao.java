@@ -17,14 +17,14 @@ public interface UserDao {
      * @param userName 用户名
      * @return 大于0：存在 0：不存在
      */
-    int isExist(@Param("userName") String userName);
+    User isExist(@Param("userName") String userName);
 
     /**
      * 向数据库插入用户信息
      * @param requestData 用户名、用户密码、用户真实姓名
      * @return 1：插入成功 0：插入失败
      */
-    int register(RequestData requestData);
+    int register(@Param("data") RequestData requestData);
 
     /**
      * 查询用户名和密码是否存在
@@ -41,7 +41,18 @@ public interface UserDao {
      */
     int review(@Param("userName") String userName, @Param("passOrNot") int passOrNot);
 
+    /**
+     * 通过用户的ID获取用户的权限；
+     * @param userId
+     * @return
+     */
     int getPrivilegeById(@Param("userId") int userId);
 
+    /**
+     * 撤销用户的注册
+     * @param userName 用户名；
+     * @return 撤销的用户数；
+     */
+    int deleteUserByUserName(@Param("userName") String userName);
 
 }

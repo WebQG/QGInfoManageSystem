@@ -1,9 +1,12 @@
 package com.qg.www.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.qg.www.models.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author net
@@ -31,5 +34,9 @@ public class RequestData {
      * 批准或者撤销注册请求,0表示撤销请求，1表示激活用户
      */
     private Integer passOrNot;
+    /**
+     * 用户列表；
+     */
+    private List<User> userList;
 
 }

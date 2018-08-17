@@ -13,4 +13,5 @@ import org.springframework.stereotype.Service;
 @Setter
 @Getter
 public class UserInfo {
+    
 }

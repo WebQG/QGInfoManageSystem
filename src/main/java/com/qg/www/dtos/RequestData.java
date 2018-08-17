@@ -15,4 +15,21 @@ import org.springframework.stereotype.Service;
 @Service
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestData {
+    /**
+     * 用户名
+     */
+    private String userName;
+    /**
+     * 用户密码
+     */
+    private String password;
+    /**
+     * 用户真实名字
+     */
+    private String name;
+    /**
+     * 批准或者撤销注册请求,0表示撤销请求，1表示激活用户
+     */
+    private Integer passOrNot;
+
 }

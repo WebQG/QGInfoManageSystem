@@ -15,4 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseData {
+    /**
+     * 响应状态码
+     */
+    private String status;
+    /**
+     * 用户的权限
+     */
+    private Integer privilege;
+    /**
+     * 用户的名字
+     */
+    private String name;
 }

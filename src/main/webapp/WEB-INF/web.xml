@@ -9,8 +9,7 @@
 
    <!-- Spring控制调派器配置-->
    <display-name>Archetype Created Web Application</display-name>
-
-   <!-- Spring和mybatis的配置文件 -->
+  <!-- Spring和mybatis的配置文件 -->
    <context-param>
      <param-name>contextConfigLocation</param-name>
      <param-value>classpath:spring-mybatis.xml</param-value>

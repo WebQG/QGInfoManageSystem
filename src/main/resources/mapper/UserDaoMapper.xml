@@ -15,7 +15,7 @@
     </select>
 
     <insert id="register">
-        INSERT user (user_name, password, name, status) VALUES (#{userName}, #{password}, #{name}, 0)
+        INSERT user (user_name, password, name, status, privilege) VALUES (#{userName}, #{password}, #{name}, 0, 1);
     </insert>
 
     <select id="login" resultType="int">
@@ -25,5 +25,9 @@
     <update id="check">
         UPDATE user SET status = #{passOrNot} FROM username = #{userName};
     </update>
+
+    <select id="getPrivilegeById">
+        SELECT privilege FROM user WHERE user_id = #{userId};
+    </select>
 
 </mapper>

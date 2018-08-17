@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qg.www.dao.UserDao">
-    <!-- 待补充-->
+    <resultMap id="BaseResultMap" type="com.qg.www.models.User">
+        <id column="ID" jdbcType="INT" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="privilege" jdbcType="INT" property="privilege"/>
+        <result column="status" jdbcType="INT" property="status"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
 </mapper>

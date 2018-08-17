@@ -12,5 +12,5 @@ import org.springframework.stereotype.Service;
 @Setter
 @Getter
 @Service
-public class Award {
+public class AwardInfo {
 }

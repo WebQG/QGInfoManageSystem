@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.www.dao.UserInfoDao">
+    <resultMap id="BaseResultMap" type="com.qg.www.models.AwardInfo">
+        <id column="userinfo_id" jdbcType="INTEGER" property="userInfoId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="group" jdbcType="VARCHAR" property="group"/>
+        <result column="college" jdbcType="VARCHAR" property="college"/>
+        <result column="student_num" jdbcType="VARCHAR" property="studentNum"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="birthplace" jdbcType="VARCHAR" property="birthplace"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+</mapper>

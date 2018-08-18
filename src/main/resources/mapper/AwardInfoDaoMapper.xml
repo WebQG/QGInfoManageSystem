@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.www.dao.AwardInfoDao">
+    <resultMap id="BaseResultMap" type="com.qg.www.models.AwardInfo">
+        <id column="award_id" jdbcType="INTEGER" property="awardId"/>
+        <result column="award_name" jdbcType="VARCHAR" property="awardName"/>
+        <result column="award_time" jdbcType="VARCHAR" property="awardTime"/>
+        <result column="award_partment" jdbcType="VARCHAR" property="department"/>
+        <result column="award_level" jdbcType="VARCHAR" property="awardLevel"/>
+        <result column="lead_teacher" jdbcType="VARCHAR" property="leadTeacher"/>
+        <result column="join_student" jdbcType="VARCHAR" property="joinStudent"/>
+        <result column="description" jdbcType="VARCHAR" property="awardDescription"/>
+        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+   <select id="queryAwardInfo" resultMap="BaseResultMap">
+       <!-- &lt;!&ndash;时间为空的时候，查询所有信息 &ndash;&gt;-->
+        <if test="awardTime==null">
+            SELECT * from awardinfo1;
+        </if>
+        <if test="awardTime !=null" >
+            SELECT * from awardinfo1 WHERE award_time='${awardTime}'AND award_level='${awardLevel}' AND rank='${rank}';
+        </if>
+    </select>
+</mapper>

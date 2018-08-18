@@ -23,8 +23,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
-    @Resource
-    private ResponseData responseData;
 
     /**
      * 用户注册业务接口；
@@ -34,6 +32,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResponseData userRegister(RequestData data) {
+        ResponseData responseData = new ResponseData();
         //获取注册用户名
         String userName = data.getUserName();
         System.out.println(userName);
@@ -68,6 +67,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResponseData userLogin(RequestData data) {
+        ResponseData responseData = new ResponseData();
         //获取登录的用户名；
         String userName = data.getUserName();
         //获取登录的密码；
@@ -110,13 +110,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResponseData userReview(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        int solveNum = 0;
         //定义用户名变量
         String userName;
         //获取UserList;
-        List<User> userList=data.getUserList();
+        List<User> userList = data.getUserList();
         //获取操作码，0表示撤销用户注册，1表示激活用户；
         Integer passOrNot = data.getPassOrNot();
-        if (!userList.isEmpty()){
+        if (!userList.isEmpty()) {
             //如果用户列表不为空
             Iterator<User> iterator = userList.iterator();
             //如果批准用户；
@@ -124,19 +126,50 @@ public class UserServiceImpl implements UserService {
                 //创建迭代，进行遍历修改用户；
                 while (iterator.hasNext()) {
                     userName = iterator.next().getUserName();
-                    userDao.review(userName,passOrNot);
+                    solveNum = userDao.review(userName, passOrNot);
                 }
-            }else {
+                //判断是否处理失败
+                if (solveNum == 0) {
+                    responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
+                    return responseData;
+                }
+            } else {
                 //对用户进行遍历撤销；
                 while (iterator.hasNext()) {
                     userName = iterator.next().getUserName();
-                    userDao.deleteUserByUserName(userName);
+                    solveNum = userDao.deleteUserByUserName(userName);
+                }
+                //判断是否撤销失败
+                if (solveNum == 0) {
+                    responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
+                    return responseData;
                 }
             }
             responseData.setStatus(Status.NORMAL.getStatus());
-        }else {
+        } else {
             //前端数据出现错误；
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 获取未激活用户列表
+     *
+     * @param data 请求者的用户名
+     * @return 未激活用户列表和状态码
+     */
+    @Override
+    public ResponseData getUnavtivedUsers(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        //定义用户名变量
+        String userName = data.getUserName();
+        if (null == userName) {
+            responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        } else {
+            List<User> userList = userDao.queryUserByStatus(UserOperate.NOT_ACTIVE.getUserOperateCode());
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setUserList(userList);
         }
         return responseData;
     }

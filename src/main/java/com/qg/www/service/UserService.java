@@ -19,6 +19,7 @@ public interface UserService {
 
     /**
      * 用户登录业务接口
+     *
      * @param data 用户登录的账号密码
      * @return 状态码和登录后的部分用户信息；
      */
@@ -26,8 +27,17 @@ public interface UserService {
 
     /**
      * 账户审核
+     *
      * @param data 处理的用户名和是否激活用户的标识
      * @return 状态码
      */
     ResponseData userReview(RequestData data);
+
+    /**
+     * 获取未激活用户列表
+     *
+     * @param data 请求者的用户名
+     * @return 未激活用户列表和状态码
+     */
+    ResponseData getUnavtivedUsers(RequestData data);
 }

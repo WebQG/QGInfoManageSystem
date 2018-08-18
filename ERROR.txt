@@ -1,0 +1,9 @@
+========================================================================================================================
+HELLO USER ! WHEN YOU SEE THIS, MAYBE THE SERVER HAPPEN ERROR OR THERE ARE NO ANY CONTENT TO EXPORT SO THAT YOU CAN'T GET THE NORMAL EXCEL FILE.
+IF OUR SERVER HAPPEN ERROR,SORRY ! OUR TEAM WILL SOLVE IT AT NEXT. WE SAY SORRY AGAIN...
+IF YOU HAVE ANY PROBLEMS , YOU CAN CALL ME 15521311458.
+
+你好用户，当你看到这个内容的时候，也许服务器端出现了问题或者因为那里本身就没有内容可以导出，导致你无法正常地导出EXCEL文件。
+如果是因为服务器端出现的问题，抱歉！我们的工作团队会尽快解决这个问题。再次说抱歉。
+如果你还有任何的问题，可以尝试联系运维人员：15521311458
+========================================================================================================================

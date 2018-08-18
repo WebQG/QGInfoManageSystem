@@ -13,7 +13,11 @@ public enum UserOperate {
     /**
      * 撤销注册；
      */
-    CANCEL_REGISTER(0)
+    CANCEL_REGISTER(0),
+    /**
+     *未注册的
+     */
+    NOT_ACTIVE(0)
     ;
     private Integer code;
     UserOperate(Integer code){

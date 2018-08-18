@@ -38,5 +38,4 @@ public class RequestData {
      * 用户列表；
      */
     private List<User> userList;
-
 }

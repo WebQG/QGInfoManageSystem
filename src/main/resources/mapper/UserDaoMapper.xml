@@ -26,11 +26,10 @@
         UPDATE user SET status = #{passOrNot} WHERE username = #{userName};
     </update>
 
-    <select id="getPrivilegeById">
-        SELECT privilege FROM user WHERE user_id = #{userId};
-    </select>
     <delete id="deleteUserByUserName">
         DELETE FROM user WHERE username=#{userName};
     </delete>
-
+    <select id="queryUserByStatus" resultType="com.qg.www.models.User">
+        SELECT username,name from user where status=${status};
+    </select>
 </mapper>

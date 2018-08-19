@@ -31,7 +31,7 @@ public class AwardServiceImpl implements AwardService {
         //定义路径变量；
         String path="";
         //查询全部信息
-        List<AwardInfo> awardInfoList = awardInfoDao.queryAwardInfo(null, null, null);
+        List<AwardInfo> awardInfoList = awardInfoDao.queryAwardInfo();
         //奖项列表不为空，进行excel文件的创建；
         if (!awardInfoList.isEmpty()) {
             try {

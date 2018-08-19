@@ -14,12 +14,6 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
     </resultMap>
    <select id="queryAwardInfo" resultMap="BaseResultMap">
-       <!-- &lt;!&ndash;时间为空的时候，查询所有信息 &ndash;&gt;-->
-        <if test="awardTime==null">
-            SELECT * from awardinfo1;
-        </if>
-        <if test="awardTime !=null" >
-            SELECT * from awardinfo1 WHERE award_time='${awardTime}'AND award_level='${awardLevel}' AND rank='${rank}';
-        </if>
+            SELECT * from awardinfo;
     </select>
 </mapper>

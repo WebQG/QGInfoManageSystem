@@ -1,6 +1,7 @@
 package com.qg.www.service;
 
 import com.qg.www.dtos.ResponseData;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author net
@@ -17,7 +18,10 @@ public interface UserInfoService {
 
     /**
      * 导入excel文件
+     *
+     * @param file     文件
+     * @param filePath 文件存在目录
      * @return 状态码
      */
-    ResponseData importExcel();
+    ResponseData importExcel(MultipartFile file, String filePath);
 }

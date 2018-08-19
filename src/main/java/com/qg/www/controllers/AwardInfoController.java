@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,8 +29,9 @@ public class AwardInfoController {
     private AwardService service;
 
     @PostMapping("/import")
-    public ResponseData importAwardInfo() {
-        return null;
+    public ResponseData importAwardInfo(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        String path=request.getServletContext().getRealPath("/");
+        return service.importExcel(file,path);
     }
 
     /**

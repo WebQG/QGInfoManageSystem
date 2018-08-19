@@ -172,9 +172,9 @@ public class ExcelTableUtil {
                 AnalysisEventListener<List<String>> listener = new AnalysisEventListener<List<String>>() {
                     @Override
                     public void invoke(List<String> object, AnalysisContext context) {
-                        System.err.println("Row:" + context.getCurrentRowNum() + " Data:" + object);
+                        System.out.println("Row:" + context.getCurrentRowNum() + " Data:" + object);
                         //读取第一行真实数据；
-                        while (context.getCurrentRowNum() > 0) {
+                        if (context.getCurrentRowNum() > 0) {
                             UserInfo userInfo = new UserInfo();
                             userInfo.setName(object.get(0));
                             userInfo.setGroup(object.get(1));
@@ -208,5 +208,54 @@ public class ExcelTableUtil {
             e.printStackTrace();
         }
         return userInfoList;
+    }
+
+    /**
+     * 读取excel文件
+     *
+     * @param filePath 文件存储路径
+     * @return 奖项信息列表
+     */
+    public static List<AwardInfo> readAwardInfoExcel(String filePath) {
+        final List<AwardInfo> awardInfoList=new ArrayList<>();
+        try {
+            try (InputStream in = new FileInputStream(filePath)) {
+                AnalysisEventListener<List<String>> listener = new AnalysisEventListener<List<String>>() {
+                    @Override
+                    public void invoke(List<String> object, AnalysisContext context) {
+                        System.out.println("Row:" + context.getCurrentRowNum() + " Data:" + object);
+                        //读取第一行真实数据；
+                        if (context.getCurrentRowNum() > 0) {
+                            AwardInfo awardInfo = new AwardInfo();
+                            awardInfo.setAwardName(object.get(0));
+                            awardInfo.setAwardTime(object.get(1));
+                            awardInfo.setAwardLevel(object.get(2));
+                            awardInfo.setRank(object.get(3));
+                            awardInfo.setDepartment(object.get(4));
+                            awardInfo.setLeadTeacher(object.get(5));
+                            awardInfo.setJoinStudent(object.get(6));
+                            awardInfo.setAwardDescription(object.get(7));
+                            awardInfoList.add(awardInfo);
+                        }
+                    }
+                    @Override
+                    public void doAfterAllAnalysed(AnalysisContext context) {
+                        System.err.println("doAfterAllAnalysed...");
+                    }
+                };
+                ExcelReader excelReader = null;
+                try {
+                    excelReader = ExcelReaderFactory.getExcelReader(in, null, listener);
+                } catch (InvalidFormatException e) {
+                    e.printStackTrace();
+                }
+                if (excelReader != null) {
+                    excelReader.read();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return awardInfoList;
     }
 }

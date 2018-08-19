@@ -1,17 +1,17 @@
 package com.qg.www.controllers;
 
+import com.qg.www.dtos.ResponseData;
 import com.qg.www.service.UserInfoService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,6 +27,18 @@ import java.io.UnsupportedEncodingException;
 public class UserInfoController {
     @Resource
     private UserInfoService userInfoService;
+
+    /**
+     * 导入成员信息excel文件
+     *
+     * @param file 文件
+     * @return 状态码；
+     */
+    @PostMapping("/import")
+    public ResponseData importUserInfo(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        String path=request.getServletContext().getRealPath("/");
+       return userInfoService.importExcel(file,path);
+    }
 
     /**
      * 导出成员信息excel表格；

@@ -4,7 +4,7 @@
     <resultMap id="iBaseResultMap" type="com.qg.www.models.UserInfo">
         <id column="userinfo_id" jdbcType="INTEGER" property="userInfoId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="group" jdbcType="VARCHAR" property="group"/>
+        <result column="qggroup" jdbcType="VARCHAR" property="group"/>
         <result column="college" jdbcType="VARCHAR" property="college"/>
         <result column="student_num" jdbcType="VARCHAR" property="studentNum"/>
         <result column="tel" jdbcType="VARCHAR" property="tel"/>
@@ -17,7 +17,7 @@
     <select id="queryUserInfo" resultMap="iBaseResultMap">
             SELECT * from userinfo;
     </select>
-    <insert id="">
-        INSERT into userinfo (name,group,college,student_num,tel,birthplace,qq,email,description)VALUES ('${name}','${group}','${college}','${studentNum}','${tel}','${birthplace}','${qq}','${email}','${description}');
+    <insert id="addUserInfo" useGeneratedKeys="true">
+        INSERT into userinfo (name,qggroup,college,student_num,tel,birthplace,qq,email,description)VALUES ('${name}','${group}','${college}','${studentNum}','${tel}','${birthplace}','${qq}','${email}','${description}');
     </insert>
 </mapper>

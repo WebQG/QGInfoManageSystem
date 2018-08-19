@@ -17,4 +17,12 @@ public interface AwardInfoDao {
      * @return 奖项信息列表
      */
     List<AwardInfo> queryAwardInfo();
+
+    /**
+     * 添加奖项信息
+     *
+     * @param awardInfo 奖项信息
+     * @return 成功条数
+     */
+    int addAwardInfo(AwardInfo awardInfo);
 }

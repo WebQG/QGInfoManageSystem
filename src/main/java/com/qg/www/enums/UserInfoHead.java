@@ -21,7 +21,7 @@ public enum UserInfoHead {
     /**
      * 学号
      */
-    STUDENT_NUMBER("学号"),
+    STUDENT_NUMBER("年级"),
     /**
      * 联系电话
      */

@@ -6,7 +6,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="qggroup" jdbcType="VARCHAR" property="group"/>
         <result column="college" jdbcType="VARCHAR" property="college"/>
-        <result column="student_num" jdbcType="VARCHAR" property="studentNum"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
         <result column="tel" jdbcType="VARCHAR" property="tel"/>
         <result column="birthplace" jdbcType="VARCHAR" property="birthplace"/>
         <result column="qq" jdbcType="VARCHAR" property="qq"/>
@@ -18,6 +18,6 @@
             SELECT * from userinfo;
     </select>
     <insert id="addUserInfo" useGeneratedKeys="true">
-        INSERT into userinfo (name,qggroup,college,student_num,tel,birthplace,qq,email,description)VALUES ('${name}','${group}','${college}','${studentNum}','${tel}','${birthplace}','${qq}','${email}','${description}');
+        INSERT into userinfo (name,qggroup,college,grade,tel,birthplace,qq,email,description)VALUES ('${name}','${group}','${college}','${grade}','${tel}','${birthplace}','${qq}','${email}','${description}');
     </insert>
 </mapper>

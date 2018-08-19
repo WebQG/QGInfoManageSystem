@@ -112,7 +112,7 @@ public class ExcelTableUtil {
                     list.add(userInfo.getName());
                     list.add(userInfo.getGroup());
                     list.add(userInfo.getCollege());
-                    list.add(userInfo.getStudentNum());
+                    list.add(userInfo.getGrade());
                     list.add(userInfo.getTel());
                     list.add(userInfo.getBirthplace());
                     list.add(userInfo.getQq());
@@ -179,7 +179,7 @@ public class ExcelTableUtil {
                             userInfo.setName(object.get(0));
                             userInfo.setGroup(object.get(1));
                             userInfo.setCollege(object.get(2));
-                            userInfo.setStudentNum(object.get(3));
+                            userInfo.setGrade(object.get(3));
                             userInfo.setTel(object.get(4));
                             userInfo.setBirthplace(object.get(5));
                             userInfo.setQq(object.get(6));

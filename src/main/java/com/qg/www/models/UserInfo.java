@@ -32,9 +32,9 @@ public class UserInfo {
      */
     private String college;
     /**
-     * 学号
+     * 年级
      */
-    private String studentNum;
+    private String grade;
     /**
      * 电话号码
      */

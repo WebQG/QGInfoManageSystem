@@ -1,7 +1,9 @@
 package com.qg.www.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.qg.www.models.AwardInfo;
 import com.qg.www.models.User;
+import com.qg.www.models.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
@@ -36,4 +38,12 @@ public class ResponseData {
      * 用户列表；
      */
     private List<User> userList;
+    /**
+     * 奖项列表
+     */
+    private List<AwardInfo> awardInfoList;
+    /**
+     * 成员信息列表
+     */
+    private List<UserInfo> userInfoList;
 }

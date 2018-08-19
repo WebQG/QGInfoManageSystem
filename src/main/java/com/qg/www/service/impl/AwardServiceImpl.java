@@ -1,11 +1,13 @@
 package com.qg.www.service.impl;
 
 import com.qg.www.dao.AwardInfoDao;
+import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
 import com.qg.www.models.AwardInfo;
 import com.qg.www.service.AwardService;
 import com.qg.www.utils.ExcelTableUtil;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,6 +90,26 @@ public class AwardServiceImpl implements AwardService {
         } else {
             //由于文件数据的缺失
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 查询奖项列表
+     *
+     * @param data 页数、获奖年份、奖项级别、获奖等级
+     * @return 奖项列表
+     */
+    @Override
+    public ResponseData queryAwardInfo(RequestData data) {
+        RowBounds rowBounds = new RowBounds(data.getPage(),8);
+        data.setAwardTime(data.getAwardTime() + "年");
+        List<AwardInfo> awardInfoList = awardInfoDao.queryiAppointedAwardInfo(data,rowBounds);
+        if(!awardInfoList.isEmpty()){
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setAwardInfoList(awardInfoList);
+        }else {
+            responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
     }

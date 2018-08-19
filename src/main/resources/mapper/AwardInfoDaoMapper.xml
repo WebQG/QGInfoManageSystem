@@ -20,4 +20,7 @@
         INSERT into awardinfo (award_name,award_time,award_partment,award_level,lead_teacher,join_student,description,rank)VALUES
          ('${awardName}','${awardTime}','${department}','${awardLevel}','${leadTeacher}','${joinStudent}','${awardDescription}','${rank}');
     </insert>
+    <select id="queryiAppointedAwardInfo" resultMap="BaseResultMap">
+        SELECT award_id,award_name,award_time,join_student FROM awardinfo WHERE award_time = '${awardTime}' AND award_level = '${awardLevel}' AND rank = '${rank}';
+    </select>
 </mapper>

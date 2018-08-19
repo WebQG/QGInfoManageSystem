@@ -1,5 +1,6 @@
 package com.qg.www.controllers;
 
+import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.service.AwardService;
 import org.apache.commons.io.FileUtils;
@@ -30,8 +31,8 @@ public class AwardInfoController {
 
     @PostMapping("/import")
     public ResponseData importAwardInfo(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        String path=request.getServletContext().getRealPath("/");
-        return service.importExcel(file,path);
+        String path = request.getServletContext().getRealPath("/");
+        return service.importExcel(file, path);
     }
 
     /**
@@ -55,6 +56,15 @@ public class AwardInfoController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
                 headers, HttpStatus.CREATED);
+    }
 
+    /**
+     * 查询奖项列表
+     * @param data 页数、获奖年份、奖项级别、获奖等级
+     * @return 奖项列表
+     */
+    @PostMapping("queryawardinfo")
+    public ResponseData queryAwardInfo(@RequestBody RequestData data){
+        return service.queryAwardInfo(data);
     }
 }

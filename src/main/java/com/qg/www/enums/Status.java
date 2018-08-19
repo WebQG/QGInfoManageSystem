@@ -41,7 +41,11 @@ public enum Status {
     /**
      * 数据格式错误
      */
-    DATA_FORMAT_ERROR("9")
+    DATA_FORMAT_ERROR("9"),
+    /**
+     * 信息不存在
+     */
+     INFO_LACK("10")
     ;
 
     private String status;

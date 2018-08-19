@@ -38,4 +38,20 @@ public class RequestData {
      * 用户列表；
      */
     private List<User> userList;
+    /**
+     * 分页、第几页
+     */
+    private Integer page;
+    /**
+     * 获奖年份
+     */
+    private String awardTime;
+    /**
+     * 奖项级别
+     */
+    private String awardLevel;
+    /**
+     * 获奖级别
+     */
+    private String rank;
 }

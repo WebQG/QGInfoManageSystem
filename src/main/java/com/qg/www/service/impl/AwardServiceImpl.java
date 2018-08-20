@@ -5,6 +5,7 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
 import com.qg.www.models.AwardInfo;
+import com.qg.www.models.UserInfo;
 import com.qg.www.service.AwardService;
 import com.qg.www.utils.ExcelTableUtil;
 import org.apache.commons.io.FileUtils;
@@ -110,7 +111,7 @@ public class AwardServiceImpl implements AwardService {
         if(null != data.getAwardTime() && "" != data.getAwardTime()){
             data.setAwardTime(data.getAwardTime() + "年");
         }
-        // 得到成员信息列表
+        // 得到奖项信息列表
         List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data,rowBounds);
         if(!awardInfoList.isEmpty()){
             responseData.setStatus(Status.NORMAL.getStatus());
@@ -168,7 +169,7 @@ public class AwardServiceImpl implements AwardService {
                 File storeFile=new File(dir.getAbsolutePath()+File.separator+awardId+".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));
+                    FileUtils.copyFile(storeFile,new File("E:\\JavaWeb\\QGInfoManager\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));
                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId),awardId+".jpg");
                    responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
@@ -182,6 +183,37 @@ public class AwardServiceImpl implements AwardService {
         }else {
             //上传图片缺失。
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 查询奖项列表
+     *
+     * @param data 获奖年份、奖项级别、获奖等级
+     * @return 奖项列表
+     */
+    @Override
+    public ResponseData queryAwardInfoAndroid(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        List<AwardInfo> awardInfoList;
+        if(null != data.getAwardTime() && !"".equals(data.getAwardTime())){
+            data.setAwardTime(data.getAwardTime() + "年");
+        }
+        if(null != data.getName()){
+            // 模糊搜索
+            awardInfoList = awardInfoDao.queryAwardInfoByName(data);
+        }else{
+            // 精确搜索
+            awardInfoList = awardInfoDao.queryAppointedAwardInfo(data);
+        }
+
+        if(!awardInfoList.isEmpty()){
+            // 将成员列表放入参数返回
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setAwardInfoList(awardInfoList);
+        }else {
+            responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
     }

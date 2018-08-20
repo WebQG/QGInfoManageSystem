@@ -213,7 +213,7 @@ public class UserServiceImpl implements UserService {
                 responseData.setStatus(Status.NORMAL.getStatus());
                 responseData.setUserInfoList(userInfoList);
             } else {
-                // 如果返回参数中应包含成员信息列表和奖状信息别彪
+                // 如果返回参数中已包含成员信息列表和奖状信息
                 RowBounds rowBounds1 = new RowBounds(0, 5 - userInfoList.size());
                 // 得到奖状信息列表
                 awardInfoList = awardInfoDao.queryAwardInfoByName(data, rowBounds1);

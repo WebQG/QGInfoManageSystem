@@ -48,4 +48,11 @@ public interface UserInfoService {
      * @return 状态码
      */
     ResponseData addUserInfoPicture(MultipartFile picture, String path, String userInfoId);
+
+    /**
+     * 提供给安卓的成员信息搜索接口
+     * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    ResponseData queryUserInfoAndroid(RequestData data);
 }

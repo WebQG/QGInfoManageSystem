@@ -89,4 +89,15 @@ public class AwardInfoController {
         System.out.println(awardId);
         return service.addAwardInfoPicture( file, path,awardId);
     }
+
+    /**
+     * 查询奖项列表
+     *
+     * @param data 获奖年份、奖项级别、获奖等级
+     * @return 奖项列表
+     */
+    @PostMapping("queryawardinfoandroid")
+    public ResponseData queryAwardInfoAndroid(@RequestBody RequestData data){
+        return service.queryAwardInfoAndroid(data);
+    }
 }

@@ -161,7 +161,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 File storeFile=new File(dir.getAbsolutePath()+File.separator+".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));
+                    FileUtils.copyFile(storeFile,new File("E:\\JavaWeb\\QGInfoManager\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));
                     userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId),userInfoId+".jpg");
                 } catch (IOException e) {
                     //存储文件失败
@@ -172,6 +172,33 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
         }else {
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 提供给安卓的成员信息搜索接口
+     * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    @Override
+    public ResponseData queryUserInfoAndroid(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        List<UserInfo> userInfoList;
+        if(null != data.getName()){
+            // 模糊搜索
+            userInfoList = userInfoDao.queryUserInfoByName(data);
+        }else{
+            // 精确搜索
+            userInfoList = userInfoDao.queryAppointedUserInfo(data);
+        }
+
+        if(!userInfoList.isEmpty()){
+            // 将成员列表放入参数返回
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setUserInfoList(userInfoList);
+        }else {
+            responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
     }

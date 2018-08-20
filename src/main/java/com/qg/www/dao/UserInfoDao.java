@@ -64,4 +64,20 @@ public interface UserInfoDao {
      * @return 成功数
      */
     int addUserInfoPicture(@Param("userInfoId") Integer userInfoId, @Param("pictureName") String pictureName);
+
+    /**
+     * 提供给安卓的成员信息搜索接口
+     *
+     * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    List<UserInfo> queryAppointedUserInfo(RequestData data);
+
+    /**
+     * 根据名称查找成员信息
+     *
+     * @param data 成员名称
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    List<UserInfo> queryUserInfoByName(RequestData data);
 }

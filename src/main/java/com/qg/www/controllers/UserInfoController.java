@@ -97,4 +97,15 @@ public class UserInfoController {
     public ResponseData addUserInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value = "userInfoId", required = false) String userInfoId) {
         return null;
     }
+
+    /**
+     * 提供给安卓的成员信息搜索接口
+     * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    @PostMapping("queryuserinfoandroid")
+    public ResponseData queryUserInfoAndroid(@RequestBody RequestData data){
+        return userInfoService.queryUserInfoAndroid(data);
+    }
+
 }

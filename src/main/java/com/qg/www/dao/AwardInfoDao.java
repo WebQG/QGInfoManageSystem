@@ -49,7 +49,8 @@ public interface AwardInfoDao {
 
     /**
      * 添加图片
-     * @param awardId 奖项ID
+     *
+     * @param awardId     奖项ID
      * @param pictureName 图片名字和后缀
      * @return 成功条数
      */
@@ -63,4 +64,20 @@ public interface AwardInfoDao {
      * @return 编号、名称、时间、参赛学生、图片地址
      */
     List<AwardInfo> queryAwardInfoByName(RequestData data, RowBounds rowBounds);
+
+    /**
+     * 查询奖项列表
+     *
+     * @param data 获奖年份、奖项级别、获奖等级
+     * @return 奖项列表
+     */
+    List<AwardInfo> queryAppointedAwardInfo(RequestData data);
+
+    /**
+     * 通过名称查询奖项粗略信息
+     *
+     * @param data 奖项名称
+     * @return 编号、名称、时间、参赛学生、图片地址
+     */
+    List<AwardInfo> queryAwardInfoByName(RequestData data);
 }

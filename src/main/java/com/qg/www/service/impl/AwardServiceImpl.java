@@ -102,12 +102,33 @@ public class AwardServiceImpl implements AwardService {
      */
     @Override
     public ResponseData queryAwardInfo(RequestData data) {
+        ResponseData responseData = new ResponseData();
         RowBounds rowBounds = new RowBounds(data.getPage(),8);
+        System.out.println(data.getPage());
         data.setAwardTime(data.getAwardTime() + "年");
-        List<AwardInfo> awardInfoList = awardInfoDao.queryiAppointedAwardInfo(data,rowBounds);
+        List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data,rowBounds);
         if(!awardInfoList.isEmpty()){
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setAwardInfoList(awardInfoList);
+        }else {
+            responseData.setStatus(Status.INFO_LACK.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 根据ID查询奖项详细信息
+     *
+     * @param data 奖项ID
+     * @return 奖项详细信息
+     */
+    @Override
+    public ResponseData getAwardInfoById(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        AwardInfo awardInfo = awardInfoDao.getAwardInfoById(data);
+        if(null != awardInfo){
+            responseData.setAwardInfo(awardInfo);
+            responseData.setStatus(Status.NORMAL.getStatus());
         }else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }

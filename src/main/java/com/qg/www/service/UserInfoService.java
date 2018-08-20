@@ -1,5 +1,6 @@
 package com.qg.www.service;
 
+import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,4 +25,18 @@ public interface UserInfoService {
      * @return 状态码
      */
     ResponseData importExcel(MultipartFile file, String filePath);
+
+    /**
+     * 根据关键字查询成员信息
+     * @param data 所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    ResponseData queryUserInfo(RequestData data);
+
+    /**
+     * 根据ID查找成员信息
+     * @param data 成员ID
+     * @return 成员详细信息
+     */
+    ResponseData getUserInfo(RequestData data);
 }

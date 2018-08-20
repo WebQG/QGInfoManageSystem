@@ -43,6 +43,10 @@ public class RequestData {
      */
     private Integer page;
     /**
+     * 获奖编号
+     */
+    private Integer awardId;
+    /**
      * 获奖年份
      */
     private String awardTime;
@@ -54,4 +58,16 @@ public class RequestData {
      * 获奖级别
      */
     private String rank;
+    /**
+     * 成员编号
+     */
+    private Integer userInfoId;
+    /**
+     * 成员组别
+     */
+    private String group;
+    /**
+     * 成员年级
+     */
+    private String grade;
 }

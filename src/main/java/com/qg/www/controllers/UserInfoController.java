@@ -1,5 +1,6 @@
 package com.qg.www.controllers;
 
+import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.service.UserInfoService;
 import org.apache.commons.io.FileUtils;
@@ -61,5 +62,25 @@ public class UserInfoController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
                 headers, HttpStatus.CREATED);
+    }
+
+    /**
+     * 根据关键字查询成员信息
+     * @param data 所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    @PostMapping("queryuserinfo")
+    public ResponseData queryUserInfo(@RequestBody RequestData data){
+        return userInfoService.queryUserInfo(data);
+    }
+
+    /**
+     * 根据ID查找成员信息
+     * @param data 成员ID
+     * @return 成员详细信息
+     */
+    @PostMapping("getuserinfo")
+    public ResponseData getUserInfo(@RequestBody RequestData data){
+        return userInfoService.getUserInfo(data);
     }
 }

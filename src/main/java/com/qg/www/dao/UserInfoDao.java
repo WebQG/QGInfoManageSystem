@@ -1,6 +1,8 @@
 package com.qg.www.dao;
 
+import com.qg.www.dtos.RequestData;
 import com.qg.www.models.UserInfo;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -25,4 +27,18 @@ public interface UserInfoDao {
      */
     int addUserInfo(UserInfo userInfo);
 
+    /**
+     * 根据关键字查询成员信息
+     * @param data 所属组别、所属年级
+     * @param rowBounds  分页信息
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    List<UserInfo> queryAppointedUserInfo(RequestData data, RowBounds rowBounds);
+
+    /**
+     * 根据ID查找成员信息
+     * @param data 成员ID
+     * @return 成员详细信息
+     */
+    UserInfo getUserInfoById(RequestData data);
 }

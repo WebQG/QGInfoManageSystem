@@ -35,5 +35,12 @@ public interface AwardInfoDao {
      * @param rowBounds 分页参数
      * @return 奖项列表
      */
-    List<AwardInfo> queryiAppointedAwardInfo(RequestData data, RowBounds rowBounds);
+    List<AwardInfo> queryAppointedAwardInfo(RequestData data, RowBounds rowBounds);
+
+    /**
+     * 根据ID查询成员详细信息
+     * @param data 成员ID
+     * @return 成员详细信息
+     */
+    AwardInfo getAwardInfoById(RequestData data);
 }

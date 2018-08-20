@@ -14,13 +14,16 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
     </resultMap>
     <select id="queryAwardInfo" resultMap="BaseResultMap">
-            SELECT * from awardinfo;
+        SELECT * from awardinfo;
     </select>
     <insert id="addAwardInfo" useGeneratedKeys="true">
         INSERT into awardinfo (award_name,award_time,award_partment,award_level,lead_teacher,join_student,description,rank)VALUES
          ('${awardName}','${awardTime}','${department}','${awardLevel}','${leadTeacher}','${joinStudent}','${awardDescription}','${rank}');
     </insert>
-    <select id="queryiAppointedAwardInfo" resultMap="BaseResultMap">
-        SELECT award_id,award_name,award_time,join_student FROM awardinfo WHERE award_time = '${awardTime}' AND award_level = '${awardLevel}' AND rank = '${rank}';
+    <select id="queryAppointedAwardInfo" resultMap="BaseResultMap">
+        SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_time = '${awardTime}' AND award_level = '${awardLevel}' AND rank = '${rank}';
+    </select>
+    <select id="getAwardInfoById" resultMap="BaseResultMap">
+        SELECT * FROM awardinfo WHERE award_id = ${awardId};
     </select>
 </mapper>

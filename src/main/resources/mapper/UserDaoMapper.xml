@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.qg.www.dao.UserDao">
-<resultMap id="BaseResultMap" type="com.qg.www.models.User">
+<resultMap id="2BaseResultMap" type="com.qg.www.models.User">
         <id column="ID" jdbcType="INTEGER" property="userId"/>
         <result column="username" jdbcType="VARCHAR" property="userName"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>

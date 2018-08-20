@@ -35,6 +35,14 @@ public class ResponseData {
      */
     private String name;
     /**
+     * 奖项信息
+     */
+    private AwardInfo awardInfo;
+    /**
+     * 成员信息
+     */
+    private UserInfo userInfo;
+    /**
      * 用户列表；
      */
     private List<User> userList;

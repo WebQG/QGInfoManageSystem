@@ -1,11 +1,14 @@
 package com.qg.www.service.impl;
 
 import com.qg.www.dao.UserInfoDao;
+import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
+import com.qg.www.models.AwardInfo;
 import com.qg.www.models.UserInfo;
 import com.qg.www.service.UserInfoService;
 import com.qg.www.utils.ExcelTableUtil;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,6 +88,45 @@ public class UserInfoServiceImpl implements UserInfoService {
         } else {
             //由于文件数据的缺失
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 根据关键字查询成员信息
+     *
+     * @param data 所属组别、所属年级
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    @Override
+    public ResponseData queryUserInfo(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        RowBounds rowBounds = new RowBounds(data.getPage(),8);
+        List<UserInfo> userInfoList = userInfoDao.queryAppointedUserInfo(data,rowBounds);
+        if(!userInfoList.isEmpty()){
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setUserInfoList(userInfoList);
+        }else {
+            responseData.setStatus(Status.INFO_LACK.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 根据ID查找成员信息
+     *
+     * @param data 成员ID
+     * @return 成员详细信息
+     */
+    @Override
+    public ResponseData getUserInfo(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        UserInfo userInfo = userInfoDao.getUserInfoById(data);
+        if(null != userInfo){
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setUserInfo(userInfo);
+        }else {
+            responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
     }

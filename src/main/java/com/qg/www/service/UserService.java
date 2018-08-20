@@ -2,6 +2,8 @@ package com.qg.www.service;
 
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author net

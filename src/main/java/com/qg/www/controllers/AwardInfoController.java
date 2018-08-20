@@ -66,4 +66,9 @@ public class AwardInfoController {
     public ResponseData queryAwardInfo(@RequestBody RequestData data){
         return service.queryAwardInfo(data);
     }
+
+    @PostMapping("getawardinfo")
+    public ResponseData getAwardInfo(@RequestBody RequestData data){
+        return service.getAwardInfoById(data);
+    }
 }

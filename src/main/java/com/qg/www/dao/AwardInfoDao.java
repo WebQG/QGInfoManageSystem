@@ -54,4 +54,13 @@ public interface AwardInfoDao {
      * @return 成功条数
      */
     int addAwardInfoPicture(@Param("awardId") Integer awardId, @Param("pictureName") String pictureName);
+
+    /**
+     * 通过名称查询奖项粗略信息
+     *
+     * @param data      奖项名称
+     * @param rowBounds 分页信息
+     * @return 编号、名称、时间、参赛学生、图片地址
+     */
+    List<AwardInfo> queryAwardInfoByName(RequestData data, RowBounds rowBounds);
 }

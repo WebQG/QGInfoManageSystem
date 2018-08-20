@@ -62,4 +62,10 @@ public class UserController {
     public ResponseData getUnactivedUsers(@RequestBody RequestData data) {
         return userService.getUnavtivedUsers(data);
     }
+
+
+    @PostMapping("queryinfo")
+    public ResponseData queryInfo(@RequestBody RequestData data) {
+        return userService.getInfoByName(data);
+    }
 }

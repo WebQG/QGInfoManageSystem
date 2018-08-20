@@ -6,6 +6,8 @@ import com.qg.www.models.AwardInfo;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author net
  * @version 1.0

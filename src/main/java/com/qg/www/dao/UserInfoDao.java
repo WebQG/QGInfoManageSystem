@@ -4,6 +4,8 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.models.UserInfo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.xmlbeans.impl.xb.xsdschema.impl.AttributeImpl;
+
 
 import java.util.List;
 
@@ -44,6 +46,15 @@ public interface UserInfoDao {
      * @return 成员详细信息
      */
     UserInfo getUserInfoById(RequestData data);
+
+    /**
+     * 根据名称查找成员信息
+     *
+     * @param data 成员名称
+     * @param rowBounds 分页信息
+     * @return 编号、名字、组别、年级、图片地址
+     */
+    List<UserInfo> queryUserInfoByName(RequestData data, RowBounds rowBounds);
 
     /**
      * 添加成员照片；

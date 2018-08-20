@@ -2,9 +2,12 @@ package com.qg.www.service;
 
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
+import com.qg.www.models.UserInfo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author net
@@ -43,5 +46,12 @@ public interface UserService {
      * @return 未激活用户列表和状态码
      */
     ResponseData getUnavtivedUsers(RequestData data);
+
+    /**
+     * 根据名称查找信息
+     * @param data 名称
+     * @return 编号、名字、组别、年级、图片地址 或  编号、名称、时间、参赛学生、图片地址
+     */
+    ResponseData getInfoByName(RequestData data);
 
 }

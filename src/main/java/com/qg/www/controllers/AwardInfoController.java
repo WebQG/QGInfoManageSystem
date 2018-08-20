@@ -66,12 +66,12 @@ public class AwardInfoController {
      * @param data 页数、获奖年份、奖项级别、获奖等级
      * @return 奖项列表
      */
-    @PostMapping("queryawardinfo")
+    @PostMapping("/queryawardinfo")
     public ResponseData queryAwardInfo(@RequestBody RequestData data) {
         return service.queryAwardInfo(data);
     }
 
-    @PostMapping("getawardinfo")
+    @PostMapping("/getawardinfo")
     public ResponseData getAwardInfo(@RequestBody RequestData data) {
         return service.getAwardInfoById(data);
     }
@@ -83,7 +83,7 @@ public class AwardInfoController {
      * @param request 请求
      * @return 状态码
      */
-    @PostMapping("modifypicture")
+    @PostMapping("/modifypicture")
     public ResponseData addAwardInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value="awardId", required=false) String awardId) {
         String path = request.getServletContext().getRealPath("");
         System.out.println(awardId);

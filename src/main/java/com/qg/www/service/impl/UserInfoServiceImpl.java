@@ -101,8 +101,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public ResponseData queryUserInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
+        // 分页信息，8条为一页
         RowBounds rowBounds = new RowBounds(data.getPage(),8);
+        // 得到成员信息列表
         List<UserInfo> userInfoList = userInfoDao.queryAppointedUserInfo(data,rowBounds);
+        // 放入返回参数
         if(!userInfoList.isEmpty()){
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserInfoList(userInfoList);
@@ -121,7 +124,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public ResponseData getUserInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
+        // 根据ID得到成员信息
         UserInfo userInfo = userInfoDao.getUserInfoById(data);
+        // 加入返回参数
         if(null != userInfo){
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserInfo(userInfo);

@@ -103,14 +103,19 @@ public class AwardServiceImpl implements AwardService {
     @Override
     public ResponseData queryAwardInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
-        RowBounds rowBounds = new RowBounds(data.getPage(),8);
-        System.out.println(data.getPage());
-        data.setAwardTime(data.getAwardTime() + "年");
+        // 分页、每页8条
+        RowBounds rowBounds = new RowBounds(data.getPage() * 8,8);
+        // 在尾部增加年
+        if(null != data.getAwardTime() && "" != data.getAwardTime()){
+            data.setAwardTime(data.getAwardTime() + "年");
+        }
+        // 得到成员信息列表
         List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data,rowBounds);
         if(!awardInfoList.isEmpty()){
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setAwardInfoList(awardInfoList);
         }else {
+            // 返回信息缺少
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
@@ -125,7 +130,9 @@ public class AwardServiceImpl implements AwardService {
     @Override
     public ResponseData getAwardInfoById(RequestData data) {
         ResponseData responseData = new ResponseData();
+        // 通过ID得到奖项信息
         AwardInfo awardInfo = awardInfoDao.getAwardInfoById(data);
+        // 加入返回参数
         if(null != awardInfo){
             responseData.setAwardInfo(awardInfo);
             responseData.setStatus(Status.NORMAL.getStatus());
@@ -134,4 +141,5 @@ public class AwardServiceImpl implements AwardService {
         }
         return responseData;
     }
+
 }

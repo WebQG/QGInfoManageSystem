@@ -21,9 +21,42 @@
          ('${awardName}','${awardTime}','${department}','${awardLevel}','${leadTeacher}','${joinStudent}','${awardDescription}','${rank}');
     </insert>
     <select id="queryAppointedAwardInfo" resultMap="BaseResultMap">
-        SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_time = '${awardTime}' AND award_level = '${awardLevel}' AND rank = '${rank}';
+        <choose>
+            <when test="(awardTime != null and awardTime != '') and (awardLevel == null or awardLevel == '') and (rank == null or rank == '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_time = '${awardTime}';
+            </when>
+            <when test="(awardTime == null or awardTime == '') and (awardLevel != null and awardLevel != '') and (rank == null or rank == '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_level = '${awardLevel}';
+            </when>
+            <when test="(awardTime == null or awardTime == '') and (awardLevel == null or awardLevel == '') and (rank != null and rank != '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE rank = '${rank}';
+            </when>
+            <when test="(awardTime != null and awardTime != '') and (awardLevel != null and awardLevel != '') and (rank == null or rank == '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_time = '${awardTime}' AND award_level = '${awardLevel}';
+            </when>
+            <when test="(awardTime != null and awardTime != '') and (awardLevel == null or awardLevel == '') and (rank != null and rank != '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_time = '${awardTime}' AND rank = '${rank}';
+            </when>
+            <when test="(awardTime == null or awardTime == '') and (awardLevel != null and awardLevel != '') and (rank != null and rank != '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_level = '${awardLevel}' AND rank = '${rank}';
+            </when>
+            <when test="(awardTime == null or awardTime == '') and (awardLevel == null or awardLevel == '') and (rank == null or rank == '')">
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo;
+            </when>
+            <otherwise>
+                SELECT award_id,award_name,award_time,join_student,url FROM awardinfo WHERE award_time = '${awardTime}' AND award_level = '${awardLevel}' AND rank = '${rank}';
+            </otherwise>
+        </choose>
     </select>
     <select id="getAwardInfoById" resultMap="BaseResultMap">
         SELECT * FROM awardinfo WHERE award_id = ${awardId};
+    </select>
+    <select id="queryAwardInfoByName" resultMap="BaseResultMap">
+        SELECT award_id,award_name,award_time,join_student,url FROM awardinfo
+        <where>
+            <if test="name != null and name != ''">
+                and award_name like concat('%','${name}','%');
+            </if>
+        </where>
     </select>
 </mapper>

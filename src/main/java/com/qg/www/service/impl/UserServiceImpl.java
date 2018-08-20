@@ -1,16 +1,23 @@
 package com.qg.www.service.impl;
 
+import com.qg.www.dao.AwardInfoDao;
 import com.qg.www.dao.UserDao;
+import com.qg.www.dao.UserInfoDao;
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
 import com.qg.www.enums.UserOperate;
+import com.qg.www.models.AwardInfo;
 import com.qg.www.models.User;
+import com.qg.www.models.UserInfo;
+import com.qg.www.service.AwardService;
 import com.qg.www.service.UserService;
 import com.qg.www.utils.DigestUtil;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +30,18 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
+    @Resource
+    private AwardInfoDao awardInfoDao;
+    @Resource
+    private UserInfoDao userInfoDao;
+    /**
+     * 成员信息一共有多少页
+     */
+    private Integer sign = 0;
+    /**
+     * 在奖状信息第一次出现时出现了多少条
+     */
+    private Integer used = 0;
 
     /**
      * 用户注册业务接口；
@@ -174,5 +193,49 @@ public class UserServiceImpl implements UserService {
         return responseData;
     }
 
-
+    /**
+     * 根据名称查找信息
+     *
+     * @param data 名称
+     * @return 编号、名字、组别、年级、图片地址 或  编号、名称、时间、参赛学生、图片地址
+     */
+    @Override
+    public ResponseData getInfoByName(RequestData data) {
+        List<UserInfo> userInfoList;
+        List<AwardInfo> awardInfoList;
+        ResponseData responseData = new ResponseData();
+        // 分页、5条分一页
+        RowBounds rowBounds = new RowBounds(data.getPage() * 5, 5);
+        // 得到成员信息列表
+        userInfoList = userInfoDao.queryUserInfoByName(data, rowBounds);
+        if (!userInfoList.isEmpty()) {
+            if (userInfoList.size() > 5) {
+                responseData.setStatus(Status.NORMAL.getStatus());
+                responseData.setUserInfoList(userInfoList);
+            } else {
+                // 如果返回参数中应包含成员信息列表和奖状信息别彪
+                RowBounds rowBounds1 = new RowBounds(0, 5 - userInfoList.size());
+                // 得到奖状信息列表
+                awardInfoList = awardInfoDao.queryAwardInfoByName(data, rowBounds1);
+                responseData.setStatus(Status.NORMAL.getStatus());
+                responseData.setUserInfoList(userInfoList);
+                responseData.setAwardInfoList(awardInfoList);
+                // 得到第一次中奖状信息列表已发送的条数
+                used = 5 - userInfoList.size();
+            }
+            // 记录成员信息出现的最后一页
+            sign = data.getPage();
+        } else {
+            // 对后面出现的奖状信息进行分页
+            RowBounds rowBounds1 = new RowBounds((data.getPage() - sign - 1) * 5 + used, 5);
+            awardInfoList = awardInfoDao.queryAwardInfoByName(data, rowBounds1);
+            if(!awardInfoList.isEmpty()){
+                responseData.setAwardInfoList(awardInfoList);
+                responseData.setStatus(Status.NORMAL.getStatus());
+            }else {
+                responseData.setStatus(Status.INFO_LACK.getStatus());
+            }
+        }
+        return responseData;
+    }
 }

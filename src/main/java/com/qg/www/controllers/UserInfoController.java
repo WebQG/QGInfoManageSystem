@@ -37,8 +37,8 @@ public class UserInfoController {
      */
     @PostMapping("/import")
     public ResponseData importUserInfo(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        String path=request.getServletContext().getRealPath("/");
-       return userInfoService.importExcel(file,path);
+        String path = request.getServletContext().getRealPath("/");
+        return userInfoService.importExcel(file, path);
     }
 
     /**
@@ -66,21 +66,23 @@ public class UserInfoController {
 
     /**
      * 根据关键字查询成员信息
+     *
      * @param data 所属组别、所属年级
      * @return 编号、名字、组别、年级、图片地址
      */
     @PostMapping("queryuserinfo")
-    public ResponseData queryUserInfo(@RequestBody RequestData data){
+    public ResponseData queryUserInfo(@RequestBody RequestData data) {
         return userInfoService.queryUserInfo(data);
     }
 
     /**
      * 根据ID查找成员信息
+     *
      * @param data 成员ID
      * @return 成员详细信息
      */
     @PostMapping("getuserinfo")
-    public ResponseData getUserInfo(@RequestBody RequestData data){
+    public ResponseData getUserInfo(@RequestBody RequestData data) {
         return userInfoService.getUserInfo(data);
     }
 }

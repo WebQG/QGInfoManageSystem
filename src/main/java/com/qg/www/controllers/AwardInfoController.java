@@ -34,10 +34,11 @@ public class AwardInfoController {
         String path = request.getServletContext().getRealPath("/");
         return service.importExcel(file, path);
     }
+
     /**
      * 导出EXCEL文件
      *
-     * @return
+     * @return ECCEL文件
      */
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportAwardInfo() throws IOException {
@@ -59,16 +60,17 @@ public class AwardInfoController {
 
     /**
      * 查询奖项列表
+     *
      * @param data 页数、获奖年份、奖项级别、获奖等级
      * @return 奖项列表
      */
     @PostMapping("queryawardinfo")
-    public ResponseData queryAwardInfo(@RequestBody RequestData data){
+    public ResponseData queryAwardInfo(@RequestBody RequestData data) {
         return service.queryAwardInfo(data);
     }
 
     @PostMapping("getawardinfo")
-    public ResponseData getAwardInfo(@RequestBody RequestData data){
+    public ResponseData getAwardInfo(@RequestBody RequestData data) {
         return service.getAwardInfoById(data);
     }
 }

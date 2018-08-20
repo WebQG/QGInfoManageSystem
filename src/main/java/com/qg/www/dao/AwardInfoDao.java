@@ -31,7 +31,7 @@ public interface AwardInfoDao {
     /**
      * 查询奖项列表
      *
-     * @param data 页数、获奖年份、奖项级别、获奖等级
+     * @param data      页数、获奖年份、奖项级别、获奖等级
      * @param rowBounds 分页参数
      * @return 奖项列表
      */
@@ -39,8 +39,18 @@ public interface AwardInfoDao {
 
     /**
      * 根据ID查询成员详细信息
+     *
      * @param data 成员ID
      * @return 成员详细信息
      */
     AwardInfo getAwardInfoById(RequestData data);
+
+    /**
+     * 通过名称查询奖项粗略信息
+     *
+     * @param data      奖项名称
+     * @param rowBounds 分页信息
+     * @return 编号、名称、时间、参赛学生、图片地址
+     */
+    List<AwardInfo> queryAwardInfoByName(RequestData data, RowBounds rowBounds);
 }

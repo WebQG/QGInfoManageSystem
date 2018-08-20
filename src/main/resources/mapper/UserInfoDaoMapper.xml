@@ -21,9 +21,30 @@
         INSERT into userinfo (name,qggroup,college,grade,tel,birthplace,qq,email,description)VALUES ('${name}','${group}','${college}','${grade}','${tel}','${birthplace}','${qq}','${email}','${description}');
     </insert>
     <select id="queryAppointedUserInfo" resultMap="iBaseResultMap">
-        SELECT userinfo_id,grade,url FROM userinfo WHERE qggroup = '${group}' AND grade = '${grade}';
+        <choose>
+            <when test="(group == null or group == '' ) and (grade != null and grade != '')">
+                SELECT userinfo_id,name,grade,url FROM userinfo WHERE grade = '${grade}';
+            </when>
+            <when test="(group != null and group != '') and (grade == null or grade == '')">
+                SELECT userinfo_id,name,grade,url FROM userinfo WHERE qggroup = '${group}';
+            </when>
+            <when test="(group == null or group == '') and (grade == null or grade == '')">
+                SELECT userinfo_id,name,grade,url FROM userinfo;
+            </when>
+            <otherwise>
+                SELECT userinfo_id,name,grade,url FROM userinfo WHERE qggroup = '${group}' AND grade = '${grade}';
+            </otherwise>
+        </choose>
     </select>
     <select id="getUserInfoById" resultMap="iBaseResultMap">
         SELECT * FROM userinfo WHERE userinfo_id = ${userInfoId};
+    </select>
+    <select id="queryUserInfoByName" resultMap="iBaseResultMap">
+        SELECT userinfo_id,name,grade,url FROM userinfo
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE concat('%','${name}','%');
+            </if>
+        </where>
     </select>
 </mapper>

@@ -6,6 +6,8 @@ import com.qg.www.models.AwardInfo;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author net
  * @version 1.0
@@ -30,6 +32,7 @@ public interface AwardService {
 
     /**
      * 查询奖项列表
+     *
      * @param data 页数、获奖年份、奖项级别、获奖等级
      * @return 奖项列表
      */
@@ -37,6 +40,7 @@ public interface AwardService {
 
     /**
      * 根据ID查询成员详细信息
+     *
      * @param data 成员ID
      * @return 成员详细信息
      */

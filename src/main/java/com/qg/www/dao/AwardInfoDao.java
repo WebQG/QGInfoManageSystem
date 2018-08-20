@@ -4,7 +4,6 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.models.AwardInfo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;

@@ -70,7 +70,7 @@ public class UserInfoController {
      * @param data 所属组别、所属年级
      * @return 编号、名字、组别、年级、图片地址
      */
-    @PostMapping("queryuserinfo")
+    @PostMapping("/queryuserinfo")
     public ResponseData queryUserInfo(@RequestBody RequestData data) {
         return userInfoService.queryUserInfo(data);
     }
@@ -81,7 +81,7 @@ public class UserInfoController {
      * @param data 成员ID
      * @return 成员详细信息
      */
-    @PostMapping("getuserinfo")
+    @PostMapping("/getuserinfo")
     public ResponseData getUserInfo(@RequestBody RequestData data) {
         return userInfoService.getUserInfo(data);
     }
@@ -94,8 +94,10 @@ public class UserInfoController {
      * @param userInfoId 用户信息ID
      * @return 状态码
      */
+    @PostMapping("/modifypicture")
     public ResponseData addUserInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value = "userInfoId", required = false) String userInfoId) {
-        return null;
+        String path=request.getServletContext().getRealPath("/");
+        return userInfoService.addUserInfoPicture(file,path,userInfoId);
     }
 
     /**

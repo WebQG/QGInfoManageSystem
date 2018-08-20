@@ -4,6 +4,7 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.service.AwardService;
 import org.apache.commons.io.FileUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -34,6 +36,7 @@ public class AwardInfoController {
         String path = request.getServletContext().getRealPath("/");
         return service.importExcel(file, path);
     }
+
     /**
      * 导出EXCEL文件
      *
@@ -59,16 +62,31 @@ public class AwardInfoController {
 
     /**
      * 查询奖项列表
+     *
      * @param data 页数、获奖年份、奖项级别、获奖等级
      * @return 奖项列表
      */
     @PostMapping("queryawardinfo")
-    public ResponseData queryAwardInfo(@RequestBody RequestData data){
+    public ResponseData queryAwardInfo(@RequestBody RequestData data) {
         return service.queryAwardInfo(data);
     }
 
     @PostMapping("getawardinfo")
-    public ResponseData getAwardInfo(@RequestBody RequestData data){
+    public ResponseData getAwardInfo(@RequestBody RequestData data) {
         return service.getAwardInfoById(data);
+    }
+
+    /**
+     * 添加图片信息
+     *
+     * @param file    图片
+     * @param request 请求
+     * @return 状态码
+     */
+    @PostMapping("modifypicture")
+    public ResponseData addAwardInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value="awardId", required=false) String awardId) {
+        String path = request.getServletContext().getRealPath("");
+        System.out.println(awardId);
+        return service.addAwardInfoPicture( file, path,awardId);
     }
 }

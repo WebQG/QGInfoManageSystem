@@ -7,6 +7,7 @@ import com.qg.www.enums.Status;
 import com.qg.www.models.AwardInfo;
 import com.qg.www.service.AwardService;
 import com.qg.www.utils.ExcelTableUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,20 +38,20 @@ public class AwardServiceImpl implements AwardService {
     @Override
     public String exportExcel() {
         //定义路径变量；
-        String path="";
+        String path = "";
         //查询全部信息
         List<AwardInfo> awardInfoList = awardInfoDao.queryAwardInfo();
         //奖项列表不为空，进行excel文件的创建；
         if (!awardInfoList.isEmpty()) {
             try {
-                path=ExcelTableUtil.createAwardExcel(awardInfoList);
+                path = ExcelTableUtil.createAwardExcel(awardInfoList);
             } catch (IOException e) {
                 //创建文件异常
                 e.printStackTrace();
             }
-        }else {
+        } else {
             //出现服务器端错误或者内容为空
-            path=new File("ERROR.txt").getAbsolutePath();
+            path = new File("ERROR.txt").getAbsolutePath();
         }
         return path;
     }
@@ -70,7 +71,7 @@ public class AwardServiceImpl implements AwardService {
                 dir.mkdirs();
             }
             //存储文件
-            File storeFile = new File(dir.getAbsolutePath() + File.separator + file.getName()+".xlsx");
+            File storeFile = new File(dir.getAbsolutePath() + File.separator + file.getName() + ".xlsx");
             try {
                 file.transferTo(storeFile);
             } catch (IOException e) {
@@ -78,10 +79,10 @@ public class AwardServiceImpl implements AwardService {
             }
             //获取文件中的成员信息；
             List<AwardInfo> awardInfoList = ExcelTableUtil.readAwardInfoExcel(storeFile.getAbsolutePath());
-            if (!awardInfoList.isEmpty()){
-                Iterator<AwardInfo> iterator=awardInfoList.iterator();
-                while(iterator.hasNext()){
-                    AwardInfo awardInfo=iterator.next();
+            if (!awardInfoList.isEmpty()) {
+                Iterator<AwardInfo> iterator = awardInfoList.iterator();
+                while (iterator.hasNext()) {
+                    AwardInfo awardInfo = iterator.next();
                     awardInfoDao.addAwardInfo(awardInfo);
                 }
             }
@@ -103,14 +104,14 @@ public class AwardServiceImpl implements AwardService {
     @Override
     public ResponseData queryAwardInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
-        RowBounds rowBounds = new RowBounds(data.getPage(),8);
+        RowBounds rowBounds = new RowBounds(data.getPage() * 8, 8);
         System.out.println(data.getPage());
         data.setAwardTime(data.getAwardTime() + "年");
-        List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data,rowBounds);
-        if(!awardInfoList.isEmpty()){
+        List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data, rowBounds);
+        if (!awardInfoList.isEmpty()) {
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setAwardInfoList(awardInfoList);
-        }else {
+        } else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
@@ -126,11 +127,53 @@ public class AwardServiceImpl implements AwardService {
     public ResponseData getAwardInfoById(RequestData data) {
         ResponseData responseData = new ResponseData();
         AwardInfo awardInfo = awardInfoDao.getAwardInfoById(data);
-        if(null != awardInfo){
+        if (null != awardInfo) {
             responseData.setAwardInfo(awardInfo);
             responseData.setStatus(Status.NORMAL.getStatus());
-        }else {
+        } else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 添加图片
+     *
+     * @param picture 图片文件
+     * @param path    存放路径
+     * @return 状态码
+     */
+    @Override
+    public ResponseData addAwardInfoPicture(MultipartFile picture, String path,String awardId) {
+        ResponseData responseData = new ResponseData();
+        String fileName ;
+        //上传的图片不为空,获取原始文件名。
+        if (null != picture) {
+            fileName = picture.getOriginalFilename();
+            //图片符合格式，则正常上传；
+            if (fileName.endsWith(".jpg") || fileName.endsWith(".png")) {
+                //创建文件夹
+                File dir=new File(path+File.separator+"img");
+                if (!dir.exists()){
+                    dir.mkdirs();
+                }
+                File storeFile=new File(dir.getAbsolutePath()+File.separator+awardId+".jpg");
+                try {
+                    picture.transferTo(storeFile);
+                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));
+                   awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId),awardId+".jpg");
+                   responseData.setStatus(Status.NORMAL.getStatus());
+                } catch (IOException e) {
+                    //存储失败
+                    responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
+                }
+            } else {
+                //返回状态码。
+                responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+            }
+        }else {
+            //上传图片缺失。
+            responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
         }
         return responseData;
     }

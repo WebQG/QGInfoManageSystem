@@ -2,6 +2,7 @@ package com.qg.www.dao;
 
 import com.qg.www.dtos.RequestData;
 import com.qg.www.models.UserInfo;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
@@ -29,16 +30,27 @@ public interface UserInfoDao {
 
     /**
      * 根据关键字查询成员信息
-     * @param data 所属组别、所属年级
-     * @param rowBounds  分页信息
+     *
+     * @param data      所属组别、所属年级
+     * @param rowBounds 分页信息
      * @return 编号、名字、组别、年级、图片地址
      */
     List<UserInfo> queryAppointedUserInfo(RequestData data, RowBounds rowBounds);
 
     /**
      * 根据ID查找成员信息
+     *
      * @param data 成员ID
      * @return 成员详细信息
      */
     UserInfo getUserInfoById(RequestData data);
+
+    /**
+     * 添加成员照片；
+     *
+     * @param userInfoId  成员ID
+     * @param pictureName 照片名字
+     * @return 成功数
+     */
+    int addUserInfoPicture(@Param("userInfoId") Integer userInfoId, @Param("pictureName") String pictureName);
 }

@@ -26,4 +26,7 @@
     <select id="getUserInfoById" resultMap="iBaseResultMap">
         SELECT * FROM userinfo WHERE userinfo_id = ${userInfoId};
     </select>
+    <update id="addUserInfoPicture">
+        UPDATE userinfo SET url='${pictureName}' WHERE userinfo_id=${userInfoId};
+    </update>
 </mapper>

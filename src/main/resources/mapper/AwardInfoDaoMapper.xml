@@ -26,4 +26,7 @@
     <select id="getAwardInfoById" resultMap="BaseResultMap">
         SELECT * FROM awardinfo WHERE award_id = ${awardId};
     </select>
+    <update id="addAwardInfoPicture" >
+        UPDATE awardinfo SET url='${pictureName}' WHERE award_id = ${awardId};
+    </update>
 </mapper>

@@ -39,4 +39,13 @@ public interface UserInfoService {
      * @return 成员详细信息
      */
     ResponseData getUserInfo(RequestData data);
+    /**
+     * 添加成员头像
+     *
+     * @param picture    照片
+     * @param path       路径
+     * @param userInfoId 用户信息ID
+     * @return 状态码
+     */
+    ResponseData addUserInfoPicture(MultipartFile picture, String path, String userInfoId);
 }

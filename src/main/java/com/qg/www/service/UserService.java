@@ -4,6 +4,7 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author net
@@ -42,4 +43,5 @@ public interface UserService {
      * @return 未激活用户列表和状态码
      */
     ResponseData getUnavtivedUsers(RequestData data);
+
 }

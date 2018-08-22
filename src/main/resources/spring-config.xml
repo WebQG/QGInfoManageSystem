@@ -47,5 +47,15 @@
         </property>
     </bean>
     <mvc:resources location="/img/" mapping="/img/**"/>
+    <mvc:resources mapping="/userImg/**" location="/userImg/"/>
+    <mvc:resources mapping="/views/**" location="/WEB-INF/html/"/>
+    <!-- 页面拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/views/**"/>
+            <mvc:exclude-mapping path="/views/new.html"/>
+            <bean class="com.qg.www.interceptor.LoginHandlerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

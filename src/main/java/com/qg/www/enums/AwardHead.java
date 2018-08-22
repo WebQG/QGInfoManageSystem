@@ -37,7 +37,11 @@ public enum AwardHead {
     /**
      * 奖项简介
      */
-    AWARD_DESCRIPTION("奖项简介")
+    AWARD_DESCRIPTION("奖项简介"),
+    /**
+     * 获奖作品
+     */
+    AWARD_PROJECT("获奖作品")
     ;
     private String awardHead;
     AwardHead(String head){

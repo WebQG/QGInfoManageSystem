@@ -52,6 +52,7 @@ public class ExcelTableUtil {
                     list.add(awardInfo1.getLeadTeacher());
                     list.add(awardInfo1.getJoinStudent());
                     list.add(awardInfo1.getAwardDescription());
+                    list.add(awardInfo1.getAwardProject());
                     data.add(list);
                 }
                 List<List<String>> head = new ArrayList<>();
@@ -63,6 +64,7 @@ public class ExcelTableUtil {
                 List<String> headCoulumn6 = new ArrayList<>();
                 List<String> headCoulumn7 = new ArrayList<>();
                 List<String> headCoulumn8 = new ArrayList<>();
+                List<String> headCoulumn9 = new ArrayList<>();
                 headCoulumn1.add(AwardHead.AWARD_NAME.getAwardHead());
                 headCoulumn2.add(AwardHead.AWARD_GET_TIME.getAwardHead());
                 headCoulumn3.add(AwardHead.AWARD_LEVEL.getAwardHead());
@@ -71,6 +73,7 @@ public class ExcelTableUtil {
                 headCoulumn6.add(AwardHead.LEAD_TEACHER.getAwardHead());
                 headCoulumn7.add(AwardHead.JOIN_STUDENT.getAwardHead());
                 headCoulumn8.add(AwardHead.AWARD_DESCRIPTION.getAwardHead());
+                headCoulumn9.add(AwardHead.AWARD_PROJECT.getAwardHead());
                 head.add(headCoulumn1);
                 head.add(headCoulumn2);
                 head.add(headCoulumn3);
@@ -79,6 +82,7 @@ public class ExcelTableUtil {
                 head.add(headCoulumn6);
                 head.add(headCoulumn7);
                 head.add(headCoulumn8);
+                head.add(headCoulumn9);
                 Table table = new Table(1);
                 table.setHead(head);
                 writer.write0(data, sheet1, table);
@@ -235,6 +239,7 @@ public class ExcelTableUtil {
                             awardInfo.setLeadTeacher(object.get(5));
                             awardInfo.setJoinStudent(object.get(6));
                             awardInfo.setAwardDescription(object.get(7));
+                            awardInfo.setAwardProject(object.get(8));
                             awardInfoList.add(awardInfo);
                         }
                     }

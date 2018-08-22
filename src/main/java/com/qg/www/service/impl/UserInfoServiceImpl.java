@@ -162,7 +162,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 File storeFile=new File(dir.getAbsolutePath()+File.separator+".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    FileUtils.copyFile(storeFile,new File("E:\\JavaWeb\\QGInfoManager\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));
+                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+userInfoId+".jpg"));
                     userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId),userInfoId+".jpg");
                 } catch (IOException e) {
                     //存储文件失败

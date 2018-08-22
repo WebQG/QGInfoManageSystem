@@ -102,7 +102,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ResponseData queryUserInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
         // 分页信息，8条为一页
-        RowBounds rowBounds = new RowBounds(data.getPage(),8);
+        RowBounds rowBounds = new RowBounds(data.getPage() * 8,8);
         // 得到成员信息列表
         List<UserInfo> userInfoList = userInfoDao.queryAppointedUserInfo(data,rowBounds);
         // 放入返回参数
@@ -132,6 +132,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             responseData.setUserInfo(userInfo);
         }else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
+            responseData.setUserInfo(new UserInfo());
         }
         return responseData;
     }
@@ -198,6 +199,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserInfoList(userInfoList);
         }else {
+            responseData.setUserInfo(new UserInfo());
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;

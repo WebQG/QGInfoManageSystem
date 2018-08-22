@@ -212,6 +212,7 @@ public class UserServiceImpl implements UserService {
             if (userInfoList.size() > 5) {
                 responseData.setStatus(Status.NORMAL.getStatus());
                 responseData.setUserInfoList(userInfoList);
+                responseData.setAwardInfoList(new ArrayList<>());
             } else {
                 // 如果返回参数中已包含成员信息列表和奖状信息
                 RowBounds rowBounds1 = new RowBounds(0, 5 - userInfoList.size());
@@ -230,10 +231,13 @@ public class UserServiceImpl implements UserService {
             RowBounds rowBounds1 = new RowBounds((data.getPage() - sign - 1) * 5 + used, 5);
             awardInfoList = awardInfoDao.queryAwardInfoByName(data, rowBounds1);
             if(!awardInfoList.isEmpty()){
+                responseData.setUserInfoList(new ArrayList<>());
                 responseData.setAwardInfoList(awardInfoList);
                 responseData.setStatus(Status.NORMAL.getStatus());
             }else {
                 responseData.setStatus(Status.INFO_LACK.getStatus());
+                responseData.setUserInfoList(new ArrayList<>());
+                responseData.setAwardInfoList(new ArrayList<>());
             }
         }
         return responseData;

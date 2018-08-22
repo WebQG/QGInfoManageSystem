@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -139,6 +140,7 @@ public class AwardServiceImpl implements AwardService {
             responseData.setAwardInfo(awardInfo);
             responseData.setStatus(Status.NORMAL.getStatus());
         }else {
+            responseData.setAwardInfo(new AwardInfo());
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
@@ -214,6 +216,7 @@ public class AwardServiceImpl implements AwardService {
             responseData.setAwardInfoList(awardInfoList);
         }else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
+            responseData.setAwardInfoList(new ArrayList<>());
         }
         return responseData;
     }

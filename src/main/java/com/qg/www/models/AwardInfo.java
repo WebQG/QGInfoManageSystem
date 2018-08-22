@@ -55,4 +55,8 @@ public class AwardInfo {
      * 奖项图片的URL
      */
     private String url;
+    /**
+     * 获奖项目
+     */
+    private String awardProject;
 }

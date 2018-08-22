@@ -40,7 +40,7 @@ public class AwardInfoController {
     /**
      * 导出EXCEL文件
      *
-     * @return ECCEL文件
+     * @return EX   CEL文件
      */
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportAwardInfo() throws IOException {
@@ -84,10 +84,10 @@ public class AwardInfoController {
      * @return 状态码
      */
     @PostMapping("/modifypicture")
-    public ResponseData addAwardInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value="awardId", required=false) String awardId) {
+    public ResponseData addAwardInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value = "awardId", required = false) String awardId) {
         String path = request.getServletContext().getRealPath("");
         System.out.println(awardId);
-        return service.addAwardInfoPicture( file, path,awardId);
+        return service.addAwardInfoPicture(file, path, awardId);
     }
 
     /**
@@ -97,7 +97,7 @@ public class AwardInfoController {
      * @return 奖项列表
      */
     @PostMapping("queryawardinfoandroid")
-    public ResponseData queryAwardInfoAndroid(@RequestBody RequestData data){
+    public ResponseData queryAwardInfoAndroid(@RequestBody RequestData data) {
         return service.queryAwardInfoAndroid(data);
     }
 }

@@ -169,7 +169,7 @@ public class AwardServiceImpl implements AwardService {
                 File storeFile=new File(dir.getAbsolutePath()+File.separator+awardId+".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    FileUtils.copyFile(storeFile,new File("E:\\JavaWeb\\QGInfoManager\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));
+                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));
                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId),awardId+".jpg");
                    responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {

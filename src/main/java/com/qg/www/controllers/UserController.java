@@ -6,6 +6,7 @@ import com.qg.www.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author net
@@ -18,7 +19,6 @@ import javax.annotation.Resource;
 public class UserController {
     @Resource
     private UserService userService;
-
     /**
      * 用户注册；
      *
@@ -37,8 +37,11 @@ public class UserController {
      * @return 用户真实名字、用户权限、状态码
      */
     @PostMapping("/login")
-    public ResponseData userLogin(@RequestBody RequestData data) {
-        return userService.userLogin(data);
+    public ResponseData userLogin(@RequestBody RequestData data,HttpServletRequest request) {
+        ResponseData responseData=userService.userLogin(data);
+        //设置登录状态
+        request.getSession().setAttribute("login",responseData.getName());
+        return responseData;
     }
 
     /**
@@ -67,5 +70,15 @@ public class UserController {
     @PostMapping("queryinfo")
     public ResponseData queryInfo(@RequestBody RequestData data) {
         return userService.getInfoByName(data);
+    }
+
+    /**
+     * 测试代码；
+     * @param request
+     */
+    @PostMapping("test")
+    public void loginTest(HttpServletRequest request){
+        request.getSession().setAttribute("user","linxu");
+        System.out.println("我已经设置了session");
     }
 }

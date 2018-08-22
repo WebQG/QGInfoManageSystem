@@ -54,4 +54,5 @@ public interface UserService {
      */
     ResponseData getInfoByName(RequestData data);
 
+
 }

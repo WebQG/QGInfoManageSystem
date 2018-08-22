@@ -17,7 +17,11 @@ public enum UserOperate {
     /**
      *未注册的
      */
-    NOT_ACTIVE(0)
+    NOT_ACTIVE(0),
+    /**
+     * 管理员权限
+     */
+    ADMIN_PRIVILEGE(2)
     ;
     private Integer code;
     UserOperate(Integer code){

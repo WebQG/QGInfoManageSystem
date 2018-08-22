@@ -216,7 +216,7 @@ public class AwardServiceImpl implements AwardService {
             responseData.setAwardInfoList(awardInfoList);
         }else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
-            responseData.setAwardInfoList(new ArrayList<>());
+            responseData.setAwardInfoList(new ArrayList<AwardInfo>());
         }
         return responseData;
     }

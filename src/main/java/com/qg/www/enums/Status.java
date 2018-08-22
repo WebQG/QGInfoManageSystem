@@ -45,7 +45,11 @@ public enum Status {
     /**
      * 信息不存在
      */
-     INFO_LACK("10")
+     INFO_LACK("10"),
+    /**
+     * 没权限
+     */
+    NO_PROVILEGE("11")
     ;
 
     private String status;

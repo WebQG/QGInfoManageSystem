@@ -125,10 +125,11 @@ public class UserServiceImpl implements UserService {
      * 账户审核
      *
      * @param data 处理的用户名和是否激活用户的标识
+     * @param privilege 权限值
      * @return 状态码
      */
     @Override
-    public ResponseData userReview(RequestData data) {
+    public ResponseData userReview(RequestData data,Integer privilege) {
         ResponseData responseData = new ResponseData();
         int solveNum = 0;
         //定义用户名变量
@@ -137,7 +138,9 @@ public class UserServiceImpl implements UserService {
         List<User> userList = data.getUserList();
         //获取操作码，0表示撤销用户注册，1表示激活用户；
         Integer passOrNot = data.getPassOrNot();
-        if (!userList.isEmpty()) {
+        System.out.println(privilege+"这是权限值");
+        //如果是管理员且数据没错误；
+        if (!userList.isEmpty()&&UserOperate.ADMIN_PRIVILEGE.getUserOperateCode().equals(privilege)) {
             //如果用户列表不为空
             Iterator<User> iterator = userList.iterator();
             //如果批准用户；
@@ -165,7 +168,11 @@ public class UserServiceImpl implements UserService {
                 }
             }
             responseData.setStatus(Status.NORMAL.getStatus());
-        } else {
+            //没权限；
+        }else if (!UserOperate.ADMIN_PRIVILEGE.getUserOperateCode().equals(privilege)){
+            responseData.setStatus(Status.NO_PROVILEGE.getStatus());
+        }
+        else {
             //前端数据出现错误；
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
         }
@@ -181,15 +188,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseData getUnavtivedUsers(RequestData data) {
         ResponseData responseData = new ResponseData();
-        //定义用户名变量
-        String userName = data.getUserName();
-        if (null == userName) {
-            responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
-        } else {
             List<User> userList = userDao.queryUserByStatus(UserOperate.NOT_ACTIVE.getUserOperateCode());
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserList(userList);
-        }
         return responseData;
     }
 
@@ -212,7 +213,7 @@ public class UserServiceImpl implements UserService {
             if (userInfoList.size() > 5) {
                 responseData.setStatus(Status.NORMAL.getStatus());
                 responseData.setUserInfoList(userInfoList);
-                responseData.setAwardInfoList(new ArrayList<>());
+                responseData.setAwardInfoList(new ArrayList<AwardInfo>());
             } else {
                 // 如果返回参数中已包含成员信息列表和奖状信息
                 RowBounds rowBounds1 = new RowBounds(0, 5 - userInfoList.size());
@@ -231,13 +232,13 @@ public class UserServiceImpl implements UserService {
             RowBounds rowBounds1 = new RowBounds((data.getPage() - sign - 1) * 5 + used, 5);
             awardInfoList = awardInfoDao.queryAwardInfoByName(data, rowBounds1);
             if(!awardInfoList.isEmpty()){
-                responseData.setUserInfoList(new ArrayList<>());
+                responseData.setUserInfoList(new ArrayList<UserInfo>());
                 responseData.setAwardInfoList(awardInfoList);
                 responseData.setStatus(Status.NORMAL.getStatus());
             }else {
                 responseData.setStatus(Status.INFO_LACK.getStatus());
-                responseData.setUserInfoList(new ArrayList<>());
-                responseData.setAwardInfoList(new ArrayList<>());
+                responseData.setUserInfoList(new ArrayList<UserInfo>());
+                responseData.setAwardInfoList(new ArrayList<AwardInfo>());
             }
         }
         return responseData;

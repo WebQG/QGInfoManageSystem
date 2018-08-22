@@ -2,6 +2,7 @@ package com.qg.www.controllers;
 
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
+import com.qg.www.models.User;
 import com.qg.www.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,8 @@ public class UserController {
     public ResponseData userLogin(@RequestBody RequestData data,HttpServletRequest request) {
         ResponseData responseData=userService.userLogin(data);
         //设置登录状态
-        request.getSession().setAttribute("login",responseData.getName());
+        request.getSession().setAttribute("privilege",responseData.getPrivilege());
+        System.out.println(request.getSession().getAttribute("privilege"));
         return responseData;
     }
 
@@ -51,8 +53,9 @@ public class UserController {
      * @return 状态码
      */
     @PostMapping("/review")
-    public ResponseData userReview(@RequestBody RequestData data) {
-        return userService.userReview(data);
+    public ResponseData userReview(@RequestBody RequestData data,HttpServletRequest request) {
+        Integer privilege=(Integer) request.getSession().getAttribute("privilege");
+        return userService.userReview(data,privilege);
     }
 
     /**

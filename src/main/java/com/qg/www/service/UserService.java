@@ -35,9 +35,10 @@ public interface UserService {
      * 账户审核
      *
      * @param data 处理的用户名和是否激活用户的标识
+     * @param previlege 权限值
      * @return 状态码
      */
-    ResponseData userReview(RequestData data);
+    ResponseData userReview(RequestData data,Integer previlege);
 
     /**
      * 获取未激活用户列表

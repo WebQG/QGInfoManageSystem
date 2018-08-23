@@ -33,8 +33,8 @@ public class ExcelTableUtil {
     public static String createAwardExcel(List<AwardInfo> awardInfos) throws IOException {
         //记录路径
         String path;
-        try (OutputStream out = new FileOutputStream("奖项.xlsx")) {
-            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+        try (OutputStream out = new FileOutputStream("奖项.xls")) {
+            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS);
             Sheet sheet1 = new Sheet(1, 0);
             sheet1.setSheetName("sheet1");
             List<List<String>> data = new ArrayList<>();
@@ -89,7 +89,7 @@ public class ExcelTableUtil {
                 writer.finish();
             }
         }
-        File file = new File("奖项.xlsx");
+        File file = new File("奖项.xls");
         path = file.getAbsolutePath();
         return path;
     }
@@ -102,8 +102,8 @@ public class ExcelTableUtil {
      */
     public static String createUserExcel(List<UserInfo> userInfoList) throws IOException {
         String path;
-        try (OutputStream out = new FileOutputStream("成员信息.xlsx")) {
-            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
+        try (OutputStream out = new FileOutputStream("成员信息.xls")) {
+            ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLS);
             Sheet sheet1 = new Sheet(1, 0);
             sheet1.setSheetName("sheet1");
             List<List<String>> data = new ArrayList<>();
@@ -158,7 +158,7 @@ public class ExcelTableUtil {
                 writer.finish();
             }
         }
-        File file = new File("成员信息.xlsx");
+        File file = new File("成员信息.xls");
         path = file.getAbsolutePath();
         return path;
     }

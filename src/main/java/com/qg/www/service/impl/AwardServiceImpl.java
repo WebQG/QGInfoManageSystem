@@ -158,6 +158,7 @@ public class AwardServiceImpl implements AwardService {
     public ResponseData addAwardInfoPicture(MultipartFile picture, String path,String awardId) {
         ResponseData responseData = new ResponseData();
         String fileName ;
+        System.out.println("奖项图片是否空"+picture==null);
         //上传的图片不为空,获取原始文件名。
         if (null != picture) {
             fileName = picture.getOriginalFilename();
@@ -171,7 +172,7 @@ public class AwardServiceImpl implements AwardService {
                 File storeFile=new File(dir.getAbsolutePath()+File.separator+awardId+".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));
+                   /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));*/
                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId),awardId+".jpg");
                    responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {

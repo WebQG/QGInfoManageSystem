@@ -21,7 +21,7 @@ public class SessionFilter  extends OncePerRequestFilter {
         HttpServletRequest reqs = (HttpServletRequest) httpServletRequest;
         //reqs.getHeader("Origin")可换成ip地址或null
         response.setHeader("Access-Control-Allow-Origin",reqs.getHeader("Origin"));
-        //        response.setHeader("Access-Control-Allow-Origin","*");
+        /*response.setHeader("Access-Control-Allow-Origin","*");*/
         //允许发送cookie
         response.setHeader("Access-Control-Allow-Credentials", "true");
         //发送方式

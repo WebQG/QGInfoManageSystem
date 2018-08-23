@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
         List<User> userList = data.getUserList();
         //获取操作码，0表示撤销用户注册，1表示激活用户；
         Integer passOrNot = data.getPassOrNot();
-        System.out.println(privilege+"这是权限值");
+        System.out.println(privilege+"service层的权限值");
         //如果是管理员且数据没错误；
         if (!userList.isEmpty()&&UserOperate.ADMIN_PRIVILEGE.getUserOperateCode().equals(privilege)) {
             //如果用户列表不为空

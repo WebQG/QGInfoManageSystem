@@ -2,12 +2,15 @@ package com.qg.www.controllers;
 
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
-import com.qg.www.models.User;
+import com.qg.www.enums.Status;
 import com.qg.www.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * @author net
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     @Resource
     private UserService userService;
+
     /**
      * 用户注册；
      *
@@ -38,11 +42,13 @@ public class UserController {
      * @return 用户真实名字、用户权限、状态码
      */
     @PostMapping("/login")
-    public ResponseData userLogin(@RequestBody RequestData data,HttpServletRequest request) {
-        ResponseData responseData=userService.userLogin(data);
+    public ResponseData userLogin(@RequestBody RequestData data, HttpServletRequest request) {
+        ResponseData responseData = userService.userLogin(data);
         //设置登录状态
-        request.getSession().setAttribute("privilege",responseData.getPrivilege());
-        System.out.println(request.getSession().getAttribute("privilege"));
+        HttpSession session = request.getSession();
+        session.setAttribute("privilege", responseData.getPrivilege());
+        session.setAttribute("name", responseData.getName());
+        System.out.println("正在登录，权限是：" + request.getSession().getAttribute("privilege"));
         return responseData;
     }
 
@@ -53,9 +59,9 @@ public class UserController {
      * @return 状态码
      */
     @PostMapping("/review")
-    public ResponseData userReview(@RequestBody RequestData data,HttpServletRequest request) {
-        Integer privilege=(Integer) request.getSession().getAttribute("privilege");
-        return userService.userReview(data,privilege);
+    public ResponseData userReview(@RequestBody RequestData data, HttpServletRequest request) {
+        Integer privilege = (Integer) request.getSession().getAttribute("privilege");
+        return userService.userReview(data, privilege);
     }
 
     /**
@@ -76,12 +82,32 @@ public class UserController {
     }
 
     /**
-     * 测试代码；
-     * @param request
+     * 退出登录；
+     *
+     * @param request 前端请求；
      */
-    @PostMapping("test")
-    public void loginTest(HttpServletRequest request){
-        request.getSession().setAttribute("user","linxu");
-        System.out.println("我已经设置了session");
+    @PostMapping("/quit")
+    public ResponseData logOut(HttpServletRequest request) {
+        request.getSession().invalidate();
+        ResponseData responseData = new ResponseData();
+        responseData.setStatus(Status.NORMAL.getStatus());
+        return responseData;
+    }
+
+    @PostMapping("/getinfo")
+    public ResponseData getInfo(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        ResponseData responseData = new ResponseData();
+        responseData.setStatus(Status.NORMAL.getStatus());
+        responseData.setName((String) session.getAttribute("name"));
+        if (responseData.getName() == null){
+            try {
+                response.sendRedirect("login.html");
+            } catch (IOException e) {
+                responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
+            }
+        }
+            responseData.setPrivilege((Integer) session.getAttribute("privilege"));
+        return responseData;
     }
 }

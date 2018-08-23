@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Path;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -40,7 +39,7 @@ public class AwardInfoController {
     /**
      * 导出EXCEL文件
      *
-     * @return EX   CEL文件
+     * @return EXCEL文件
      */
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportAwardInfo() throws IOException {
@@ -84,9 +83,9 @@ public class AwardInfoController {
      * @return 状态码
      */
     @PostMapping("/modifypicture")
-    public ResponseData addAwardInfoPicture(MultipartFile file, HttpServletRequest request, @RequestParam(value = "awardId", required = false) String awardId) {
+    public ResponseData addAwardInfoPicture(@RequestParam("picture") MultipartFile file, HttpServletRequest request, @RequestParam(value = "awardId", required = false) String awardId) {
         String path = request.getServletContext().getRealPath("");
-        System.out.println(awardId);
+        System.out.println("上传奖项图片ID："+awardId);
         return service.addAwardInfoPicture(file, path, awardId);
     }
 

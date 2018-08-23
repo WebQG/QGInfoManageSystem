@@ -149,9 +149,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ResponseData addUserInfoPicture(MultipartFile picture, String path, String userInfoId) {
         ResponseData responseData = new ResponseData();
         String fileName;
+        System.out.println(picture==null);
         //上传图片不为空，获取原始文件名
         if (null != picture) {
             fileName = picture.getOriginalFilename();
+            System.out.println(fileName);
             //判断图片格式
             if (fileName.endsWith(".jpg")||fileName.endsWith(".png")){
                 //创建文件夹
@@ -159,11 +161,12 @@ public class UserInfoServiceImpl implements UserInfoService {
                 if (!dir.exists()){
                     dir.mkdirs();
                 }
-                File storeFile=new File(dir.getAbsolutePath()+File.separator+".jpg");
+                File storeFile=new File(dir.getAbsolutePath()+File.separator+userInfoId+".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+userInfoId+".jpg"));
+                   /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));*/
                     userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId),userInfoId+".jpg");
+                    responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
                     //存储文件失败
                     responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());

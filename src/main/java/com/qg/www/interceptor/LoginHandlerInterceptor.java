@@ -18,31 +18,27 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         String url = httpServletRequest.getRequestURI();
         System.out.println("用户正在访问："+url);
         if (url.indexOf("views") > 0) {
-            if (url.indexOf("new.html")>0){
+            if (url.indexOf("login.html")>0){
                 return true;
             }else {
                 HttpSession session = httpServletRequest.getSession();
-                String user = (String) session.getAttribute("user");
-                System.out.println("user is exists:"+user);
+               Integer user = (Integer) session.getAttribute("privilege");
+
+                System.out.println("拦截权限 is :"+user);
                 if (null == user) {
-                    httpServletResponse.sendRedirect("new.html");
+                    httpServletResponse.sendRedirect("login.html");
                     return false;
                 }else {
-                    System.out.println("test");
                     return true;
                 }
             }
-
         }else{
             return false;
         }
     }
-
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
     }
-
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
     }

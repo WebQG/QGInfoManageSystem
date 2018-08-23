@@ -49,11 +49,14 @@
     <mvc:resources location="/img/" mapping="/img/**"/>
     <mvc:resources mapping="/userImg/**" location="/userImg/"/>
     <mvc:resources mapping="/views/**" location="/WEB-INF/html/"/>
+    <mvc:resources mapping="/styles/**" location="/WEB-INF/styles/"/>
+    <mvc:resources mapping="/srcipts/**" location="/WEB-INF/srcipts/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
     <!-- 页面拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/views/**"/>
-            <mvc:exclude-mapping path="/views/new.html"/>
+            <mvc:exclude-mapping path="/views/login.html"/>
             <bean class="com.qg.www.interceptor.LoginHandlerInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

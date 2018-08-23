@@ -57,7 +57,7 @@ public class AwardInfoController {
         headers.setContentDispositionFormData("attachment", fileName);
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
-                headers, HttpStatus.CREATED);
+                headers, HttpStatus.OK);
     }
 
     /**

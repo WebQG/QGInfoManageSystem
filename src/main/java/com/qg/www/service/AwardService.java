@@ -63,4 +63,12 @@ public interface AwardService {
      * @return 奖项列表
      */
     ResponseData queryAwardInfoAndroid(RequestData data);
+
+    /**
+     * 导出分类奖项信息；
+     *
+     * @param data 分类数据
+     * @return 文件路径；
+     */
+    String exportSomeAwardInfo(RequestData data);
 }

@@ -202,7 +202,7 @@ public class ExcelTableUtil {
                 try {
                     excelReader = ExcelReaderFactory.getExcelReader(in, null, listener);
                 } catch (InvalidFormatException e) {
-                    e.printStackTrace();
+                    System.out.println("文件格式无效，读取失败。");
                 }
                 if (excelReader != null) {
                     excelReader.read();
@@ -252,7 +252,7 @@ public class ExcelTableUtil {
                 try {
                     excelReader = ExcelReaderFactory.getExcelReader(in, null, listener);
                 } catch (InvalidFormatException e) {
-                    e.printStackTrace();
+                    System.out.println("文件格式无效，读取失败。");
                 }
                 if (excelReader != null) {
                     excelReader.read();

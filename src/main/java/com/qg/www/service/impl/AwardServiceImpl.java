@@ -5,10 +5,8 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
 import com.qg.www.models.AwardInfo;
-import com.qg.www.models.UserInfo;
 import com.qg.www.service.AwardService;
 import com.qg.www.utils.ExcelTableUtil;
-import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,9 +27,6 @@ import java.util.List;
 public class AwardServiceImpl implements AwardService {
     @Resource
     private AwardInfoDao awardInfoDao;
-    @Resource
-    private ResponseData responseData;
-
     /**
      * 导出excel表格业务
      *
@@ -67,29 +62,36 @@ public class AwardServiceImpl implements AwardService {
      */
     @Override
     public ResponseData importExcel(MultipartFile file, String filePath) {
+        ResponseData responseData = new ResponseData();
         if (!file.isEmpty()) {
             File dir = new File(filePath + File.separator + "awardFile");
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            //存储文件
-            File storeFile = new File(dir.getAbsolutePath() + File.separator + file.getName() + ".xlsx");
-            try {
-                file.transferTo(storeFile);
-            } catch (IOException e) {
-                responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
-            }
-            //获取文件中的成员信息；
-            List<AwardInfo> awardInfoList = ExcelTableUtil.readAwardInfoExcel(storeFile.getAbsolutePath());
-            if (!awardInfoList.isEmpty()) {
-                Iterator<AwardInfo> iterator = awardInfoList.iterator();
-                while (iterator.hasNext()) {
-                    AwardInfo awardInfo = iterator.next();
-                    awardInfoDao.addAwardInfo(awardInfo);
+            String fileName = file.getOriginalFilename();
+            if (null != fileName && (fileName.endsWith(".xlsx") || fileName.endsWith("xls"))) {
+                //存储文件
+                File storeFile = new File(dir.getAbsolutePath() + File.separator + file.getName() + ".xlsx");
+                try {
+                    file.transferTo(storeFile);
+                } catch (IOException e) {
+                    responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
                 }
+                //获取文件中的成员信息；
+                List<AwardInfo> awardInfoList = ExcelTableUtil.readAwardInfoExcel(storeFile.getAbsolutePath());
+                if (!awardInfoList.isEmpty()) {
+                    Iterator<AwardInfo> iterator = awardInfoList.iterator();
+                    while (iterator.hasNext()) {
+                        AwardInfo awardInfo = iterator.next();
+                        awardInfoDao.addAwardInfo(awardInfo);
+                    }
+                }
+                //正常
+                responseData.setStatus(Status.NORMAL.getStatus());
+            } else {
+                responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
             }
-            //正常
-            responseData.setStatus(Status.NORMAL.getStatus());
+
         } else {
             //由于文件数据的缺失
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
@@ -107,17 +109,17 @@ public class AwardServiceImpl implements AwardService {
     public ResponseData queryAwardInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
         // 分页、每页8条
-        RowBounds rowBounds = new RowBounds(data.getPage() * 8,8);
+        RowBounds rowBounds = new RowBounds(data.getPage() * 8, 8);
         // 在尾部增加年
-        if(null != data.getAwardTime() && "" != data.getAwardTime()){
+        if (null != data.getAwardTime() && "" != data.getAwardTime()) {
             data.setAwardTime(data.getAwardTime() + "年");
         }
         // 得到奖项信息列表
-        List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data,rowBounds);
-        if(!awardInfoList.isEmpty()){
+        List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data, rowBounds);
+        if (!awardInfoList.isEmpty()) {
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setAwardInfoList(awardInfoList);
-        }else {
+        } else {
             // 返回信息缺少
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
@@ -136,10 +138,10 @@ public class AwardServiceImpl implements AwardService {
         // 通过ID得到奖项信息
         AwardInfo awardInfo = awardInfoDao.getAwardInfoById(data);
         // 加入返回参数
-        if(null != awardInfo){
+        if (null != awardInfo) {
             responseData.setAwardInfo(awardInfo);
             responseData.setStatus(Status.NORMAL.getStatus());
-        }else {
+        } else {
             responseData.setAwardInfo(new AwardInfo());
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
@@ -155,26 +157,26 @@ public class AwardServiceImpl implements AwardService {
      * @return 状态码
      */
     @Override
-    public ResponseData addAwardInfoPicture(MultipartFile picture, String path,String awardId) {
+    public ResponseData addAwardInfoPicture(MultipartFile picture, String path, String awardId) {
         ResponseData responseData = new ResponseData();
-        String fileName ;
-        System.out.println("奖项图片是否空"+picture==null);
+        String fileName;
+        System.out.println("奖项图片是否空" + picture == null);
         //上传的图片不为空,获取原始文件名。
         if (null != picture) {
             fileName = picture.getOriginalFilename();
             //图片符合格式，则正常上传；
             if (fileName.endsWith(".jpg") || fileName.endsWith(".png")) {
                 //创建文件夹
-                File dir=new File(path+File.separator+"img");
-                if (!dir.exists()){
+                File dir = new File(path + File.separator + "img");
+                if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                File storeFile=new File(dir.getAbsolutePath()+File.separator+awardId+".jpg");
+                File storeFile = new File(dir.getAbsolutePath() + File.separator + awardId + ".jpg");
                 try {
                     picture.transferTo(storeFile);
-                   /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));*/
-                   awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId),awardId+".jpg");
-                   responseData.setStatus(Status.NORMAL.getStatus());
+                    /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));*/
+                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId), awardId + ".jpg");
+                    responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
                     //存储失败
                     responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
@@ -183,7 +185,7 @@ public class AwardServiceImpl implements AwardService {
                 //返回状态码。
                 responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
             }
-        }else {
+        } else {
             //上传图片缺失。
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
         }
@@ -200,25 +202,51 @@ public class AwardServiceImpl implements AwardService {
     public ResponseData queryAwardInfoAndroid(RequestData data) {
         ResponseData responseData = new ResponseData();
         List<AwardInfo> awardInfoList;
-        if(null != data.getAwardTime() && !"".equals(data.getAwardTime())){
+        if (null != data.getAwardTime() && !"".equals(data.getAwardTime())) {
             data.setAwardTime(data.getAwardTime() + "年");
         }
-        if(null != data.getName()){
+        if (null != data.getName()) {
             // 模糊搜索
             awardInfoList = awardInfoDao.queryAwardInfoByName(data);
-        }else{
+        } else {
             // 精确搜索
             awardInfoList = awardInfoDao.queryAppointedAwardInfo(data);
         }
 
-        if(!awardInfoList.isEmpty()){
+        if (!awardInfoList.isEmpty()) {
             // 将成员列表放入参数返回
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setAwardInfoList(awardInfoList);
-        }else {
+        } else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
             responseData.setAwardInfoList(new ArrayList<AwardInfo>());
         }
         return responseData;
+    }
+
+    /**
+     * 导出分类奖项信息；
+     *
+     * @param data 分类数据
+     * @return 文件路径；
+     */
+    @Override
+    public String exportSomeAwardInfo(RequestData data) {
+        String awardTime = data.getAwardTime();
+        String awardLevel = data.getAwardLevel();
+        String rank = data.getRank();
+        List<AwardInfo> awardInfoList;
+        if (awardTime == null && rank == null && awardLevel == null) {
+            awardInfoList = awardInfoDao.queryAwardInfo();
+        } else {
+            awardInfoList = awardInfoDao.queryAwardInfoByTimeAndRank(data);
+        }
+        String path;
+        try {
+            path = ExcelTableUtil.createAwardExcel(awardInfoList);
+        } catch (IOException e) {
+            path = new File("ERROT.txt").getAbsolutePath();
+        }
+        return path;
     }
 }

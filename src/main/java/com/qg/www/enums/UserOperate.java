@@ -13,11 +13,15 @@ public enum UserOperate {
     /**
      * 撤销注册；
      */
-    CANCEL_REGISTER(0),
+    CANCEL_REGISTER(2),
     /**
-     *未注册的
+     *未激活的
      */
     NOT_ACTIVE(0),
+    /**
+     * 添加进黑名单
+     */
+    BLACKLIST_USER(3),
     /**
      * 管理员权限
      */

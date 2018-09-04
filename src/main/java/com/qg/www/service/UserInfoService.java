@@ -55,4 +55,12 @@ public interface UserInfoService {
      * @return 编号、名字、组别、年级、图片地址
      */
     ResponseData queryUserInfoAndroid(RequestData data);
+
+    /**
+     * 导出分类成员信息
+     * @param requestData 请求信息参数
+     * @return 文件路径
+     */
+    String exportSomeOneInfoExcel(RequestData requestData);
+
 }

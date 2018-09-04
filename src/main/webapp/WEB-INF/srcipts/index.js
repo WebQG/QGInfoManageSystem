@@ -3,7 +3,7 @@
  */
 (function() {
     $.ajax({
-        url: 'http://'+ window.ip +':8080/qginfosystem/user/getinfo',
+        url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/user/getinfo',
         type: 'post',
         crossDomain: true,
     　　xhrFields: {
@@ -33,7 +33,8 @@
         error: function() {
             // 请求失败时要干什么
             showMessage('请求失败');
-            window.location.replace('login.html')
+            // window.location.replace('login.html')
+            //window.location.href = 'login.html';
         }
     });
 
@@ -42,7 +43,7 @@
  */
 (function() {
     var logoutButton = document.getElementById('logout-button'),
-        url = 'http://' + ip + ':8080/qginfosystem/user/quit';
+        url = 'http://' + ip + ':'+ window.port +'/qginfosystem/user/quit';
 
     logoutButton.onclick = function() {
         showConfirm('确认退出?', function() {
@@ -66,8 +67,8 @@
     function successCallback(r) {
         if (r.status === '1') {
 
-
-                window.location.replace('login.html');
+        
+            window.location.href = 'login.html';
         }
     }
     function errorCallback() {
@@ -362,7 +363,7 @@ function initprizeContainer() {
         };
 
     //请求粗略信息URL
-    window.prizeURL = 'http://' + ip + ':8080/qginfosystem/awardinfo/queryawardinfo';
+    window.prizeURL = 'http://' + ip + ':'+ window.port +'/qginfosystem/awardinfo/queryawardinfo';
     
     AjaxUtil.post(prizeURL, data, 'json', 'application/json', successCallback, errorCallback);
     
@@ -504,7 +505,7 @@ function createPrize(num, data) {
             imgURL;
 
         for (let i = prizeIndex, j = 0; i <  prizeIndex + num; i++, j++) {
-            imgURL = 'http://' + ip + ':8080/qginfosystem/img/' + data[j].url + '?=' + Math.random();
+            imgURL = 'http://' + ip + ':'+ window.port +'/qginfosystem/img/' + data[j].url + '?=' + Math.random();
             prizeLi[i].setAttribute('data-id', data[j].awardId);
             prizeImg[i].setAttribute('src', imgURL);
             prizeName[i].innerHTML = data[j].awardName;
@@ -599,7 +600,7 @@ function viewPrizeDetail(ID) {
                 </div>
             </div>
         `;
-    var prizeInfoURL = 'http://' + ip + ':8080/qginfosystem/awardinfo/getawardinfo';
+    var prizeInfoURL = 'http://' + ip + ':'+ window.port +'/qginfosystem/awardinfo/getawardinfo';
     
     prizeDetailContainer.innerHTML = model;
     
@@ -618,7 +619,7 @@ function viewPrizeDetail(ID) {
             var prizeDetailImg = document.getElementById('prize-detail-img'),
                 introduction = document.getElementById('introduction'),
                 prizeDetail = document.getElementsByClassName('prize-detail-input');
-                imgURL = 'http://' + ip +':8080/qginfosystem/img/' + r.awardInfo.url + '?=' + Math.random();
+                imgURL = 'http://' + ip +':'+ window.port +'/qginfosystem/img/' + r.awardInfo.url + '?=' + Math.random();
 
             //填充信息
             prizeDetailImg.setAttribute('src', imgURL);
@@ -667,7 +668,7 @@ function viewPrizeDetail(ID) {
 function prizeUpload(ID) { 
     console.log(ID);
     var file = document.getElementById('prize-upload'),
-        url = 'http://' + ip + ':8080/qginfosystem/awardinfo/modifypicture';
+        url = 'http://' + ip + ':'+ window.port +'/qginfosystem/awardinfo/modifypicture';
 
     if (file.length != 0) {
         var formdata = new FormData();
@@ -874,7 +875,7 @@ function informationListContainer() {
             userinfoArr = jsonObj.userInfoList;
         for (i = 0; i < userinfoArr.length; i++) {
             container.innerHTML += '<li userinfoid=' + userinfoArr[i].userInfoId + '>'
-                                + '<img src="http://'+ window.ip +':8080/qginfosystem/userImg/'+ userinfoArr[i].url +'?='+ Math.random() + '">'  
+                                + '<img src="http://'+ window.ip +':'+ window.port +'/qginfosystem/userImg/'+ userinfoArr[i].url +'?='+ Math.random() + '">'  
                                 + '<div>'
                                 + '<span>'+ userinfoArr[i].name +'</span>'
                                 + '<span>' + userinfoArr[i].grade + userinfoArr[i].group + '</span>'
@@ -930,7 +931,7 @@ function informationListContainer() {
         jsonObj.page = page;
 
         $.ajax({
-            url: 'http://'+ window.ip +':8080/qginfosystem/userinfo/queryuserinfo',
+            url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/queryuserinfo',
             type: 'post',
             data: JSON.stringify(jsonObj),
             dataType: 'json',
@@ -1186,7 +1187,7 @@ function informationDetailRequest(userInfoId) {
     jsonObj.userInfoId = userInfoId;
 
     $.ajax({
-        url: 'http://'+ window.ip +':8080/qginfosystem/userinfo/getuserinfo',
+        url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/getuserinfo',
         type: 'post',
         data: JSON.stringify(jsonObj),
         dataType: 'json',
@@ -1349,21 +1350,21 @@ function informationDetailRequest(userInfoId) {
                 if (!((row == 1 && col == headArr.length - 1) || (row == 0 && col == 1) || row == 0 && col == 0)) {  // 注意有个非符号，当两个不是相邻的时候  
                     if (row == 0) {
                         for (k = 0; k < col - 1; k++) {
-                            $('.file-preview-value li ul')[parseInt(checkSpace.slice(1)) - 2].innerHTML +='<li><li>';
-                            $('.file-preview-value li ul:eq('+ (parseInt(checkSpace.slice(1)) - 2) +')').children('li').last().remove();
+                            $('.file-preview-value li ul')[parseInt(checkSpace.slice(1)) - 2].innerHTML +='<li></li>';
+                            // $('.file-preview-value li ul:eq('+ (parseInt(checkSpace.slice(1)) - 2) +')').children('li').last().remove();
                         }
                     } else {
                         // 把所有整一行为空的填满
                         for (k = parseInt(checkSpace.slice(1)) - 1; k < parseInt(readArr[i].split('=\'')[0].slice(1) - 2); k++) {
                             for (lines = 0; lines < headArr.length; lines++) {
-                                $('.file-preview-value li ul')[k].innerHTML +='<li><li>';
-                                $('.file-preview-value li ul:eq('+ k +')').children('li').last().remove();
+                                $('.file-preview-value li ul')[k].innerHTML +='<li></li>';
+                                // $('.file-preview-value li ul:eq('+ k +')').children('li').last().remove();
                             }
                         }
                         for (k = 0; k < parseInt(readArr[i].split('=\'')[0].slice(0, 1).charCodeAt(0)) - 'A'.charCodeAt(0); k++) {
                             // console.log(checkSpace.slice(1));
-                            $('.file-preview-value li ul')[parseInt(readArr[i].split('=\'')[0].slice(1)) - 2].innerHTML +='<li><li>';
-                            $('.file-preview-value li ul:eq('+ (readArr[i].split('=\'')[0].slice(1) - 2) +')').children('li').last().remove();
+                            $('.file-preview-value li ul')[parseInt(readArr[i].split('=\'')[0].slice(1)) - 2].innerHTML +='<li></li>';
+                            // $('.file-preview-value li ul:eq('+ (readArr[i].split('=\'')[0].slice(1) - 2) +')').children('li').last().remove();
                         }
                     }
                 }
@@ -1378,6 +1379,49 @@ function informationDetailRequest(userInfoId) {
                 }
             }
 
+        }
+    }
+
+    /**
+     * 
+     * @param {*} $target 
+     * @param {*} className 
+     */
+    function showList($target, className) {
+        if (ClassUtil.hasClass($target[0], className) == false) {
+            $target.css('display', 'block');
+            setTimeout(function() {
+                $target.addClass(className);
+            }, 10);
+        }
+    }
+
+    /**
+     * @description 隐藏下拉栏
+     * @param {object} target 目标节点 
+     * @param {String} className 类名
+     */
+    function hiddenList($target, className) {
+        if (ClassUtil.hasClass($target[0], className) == true) {
+            $target.removeClass(className);
+            setTimeout(function() {
+                $target.css('display', 'none');
+            }, 350)
+        }
+    }
+
+    /**
+     * @description 展开下拉栏时候对其进行初始化
+     * @param {jq object} $target 目标下拉栏
+     */
+    function chocieListRenew($target) {
+        var text = $target.attr('choiced'),
+            i;
+        for (i = 0; i < $target.children('li').length; i++) {
+            if ($target.children('li')[i].innerText == text) {
+                $($target.children('li')[i]).addClass('export-choiced');
+                return;
+            }
         }
     }
 
@@ -1445,7 +1489,8 @@ function informationDetailRequest(userInfoId) {
             case $('.load-button-container .load-button-layer')[2]: {
                 // 请求导出奖项表格
                 // ClassUtil.addClass($('.load-button-container .load-button-layer')[2], 'load-button-choiced');
-                exportPrizeRequest();
+                // exportPrizeRequest();
+                showList($('.export-prize-choice-list:eq(0)'), 'down-transform-opacity-animate');
                 break;
             }
 
@@ -1454,11 +1499,19 @@ function informationDetailRequest(userInfoId) {
             case $('.load-button-container .load-button-layer')[3]: {
                 // 请求导出信息excel表格
                 // ClassUtil.addClass($('.load-button-container .load-button-layer')[3], 'load-button-choiced');
-                exportInfoRequest();
+                showList($('.export-info-choice-list:eq(0)'), 'down-transform-opacity-animate');
+                
+                // exportInfoRequest();
                 break;
             }
 
             // 以下为提交表单时候的事件监听
+            case $('#model-download')[0]: {
+                showList($('.import-file-model-list:eq(0)'), 'up-transform-opacity-animate');
+                break;
+            }
+
+            
             case $('#upload-submit')[0]: {
                 // 提交文件上传
                 if (chartType == '') {
@@ -1494,10 +1547,178 @@ function informationDetailRequest(userInfoId) {
                 $('.file-preview-value')[0].innerHTML = '';
                 return;
             }
+
+            // 对弹出选择框的点击事件的监听
+            case $('#import-prize-model')[0]: {
+                // 下载奖项模板
+                break;
+            }
+
+            case $('#import-info-model')[0]: {
+                // 下载成员模板
+                break;
+            }
+
         }
     }
     /* 导入导出文件的事件监听 */
     EventUtil.addHandler($('.upload-download-container')[0], 'click', loadPageClickListen);
+    EventUtil.addHandler($('.root')[0], 'click', hiddenFilePageList);
+
+    /**
+     * @description 隐藏页面的下拉栏
+     */
+    function hiddenFilePageList() {
+        var i;
+        hiddenList($('.import-file-model-list:eq(0)'), 'up-transform-opacity-animate');
+        hiddenList($('.export-info-choice-list:eq(0)'), 'down-transform-opacity-animate');
+        hiddenList($('.file-grade-list:eq(0)'), 'down-transform-opacity-animate');
+        hiddenList($('.file-group-list:eq(0)'), 'down-transform-opacity-animate');
+        hiddenList($('.export-prize-choice-list'), 'down-transform-opacity-animate');
+        for (i = 0; i < 3; i++) {
+            hiddenList($('.export-prize-choice-list>ul:eq('+ i +')'), 'down-transform-opacity-animate');
+        }
+    }
+
+    /**
+     * 初始化选项
+     */
+    (function() {
+        var i;
+        for (i = 2006; i <= (new Date()).getFullYear(); i++) {
+            $('.file-awardTime-list>ul')[0].innerHTML += '<li>'+ i + '</li>';
+            $('.file-grade-list>ul')[0].innerHTML += '<li>'+ i + '</li>';
+        }
+    })()
+
+    /**
+     * @description 对导出的下拉栏进行监听
+     * @param {object} event 事件监听对象
+     */
+    function exportListClickListen(event) {
+        event.stopPropagation();
+        var i;
+        switch(event.target) {
+            case $('.file-grade-switch')[0]: {
+                chocieListRenew($('.file-grade-list>ul'));
+                if (ClassUtil.hasClass($('.file-grade-list:eq(0)')[0], 'down-transform-opacity-animate') == false) {
+                    showList($('.file-grade-list:eq(0)'), 'down-transform-opacity-animate');
+                } else {
+                    hiddenList($('.file-grade-list:eq(0)'), 'down-transform-opacity-animate');
+                }
+                break;
+            }
+
+            case $('.file-group-switch')[0]: {
+                chocieListRenew($('.file-group-list>ul'));
+                if (ClassUtil.hasClass($('.file-group-list:eq(0)')[0], 'down-transform-opacity-animate') == false) {
+                    showList($('.file-group-list:eq(0)'), 'down-transform-opacity-animate');
+                } else {
+                    hiddenList($('.file-group-list:eq(0)'), 'down-transform-opacity-animate');
+                }
+                break;
+            }
+
+            case $('.file-awardTime-switch')[0]: {
+                chocieListRenew($('.file-awardTime-list>ul'))
+                // 获奖时间的下拉按钮
+                if (ClassUtil.hasClass($('.file-awardTime-list:eq(0)')[0], 'down-transform-opacity-animate') == false) {
+                    showList($('.file-awardTime-list:eq(0)'), 'down-transform-opacity-animate');
+                } else {
+                    hiddenList($('.file-awardTime-list:eq(0)'), 'down-transform-opacity-animate');
+                }
+                break;
+            }
+
+            case $('.file-awardLevel-switch')[0]: {
+                // 获奖等级的下拉按钮
+                chocieListRenew($('.file-awardLevel-list>ul'))
+                if (ClassUtil.hasClass($('.file-awardLevel-list:eq(0)')[0], 'down-transform-opacity-animate') == false) {
+                    showList($('.file-awardLevel-list:eq(0)'), 'down-transform-opacity-animate');
+                } else {
+                    hiddenList($('.file-awardLevel-list:eq(0)'), 'down-transform-opacity-animate');
+                }
+                break;
+            }
+
+            case $('.file-rank-switch')[0]: {
+                // 获奖级别的下拉按钮
+                chocieListRenew($('.file-rank-list>ul'))
+                if (ClassUtil.hasClass($('.file-rank-list:eq(0)')[0], 'down-transform-opacity-animate') == false) {
+                    showList($('.file-rank-list:eq(0)'), 'down-transform-opacity-animate');
+                } else {
+                    hiddenList($('.file-rank-list:eq(0)'), 'down-transform-opacity-animate');
+                }
+                break;
+            }
+            // 点击按钮时候的请求
+            case $('.export-info-choice-list>button')[0]: {
+                // 发送请求
+                exportInfoRequest($('.file-grade-switch')[0].innerText, $('.file-group-switch')[0].innerText);
+                hiddenFilePageList();
+                break;
+            }
+
+            case $('.export-prize-choice-list>button')[0]: {
+                // 下载奖项
+                exportPrizeRequest($('.file-awardTime-switch')[0].innerText, $('.file-awardLevel-switch')[0].innerText, $('.file-rank-switch')[0].innerText);
+                hiddenFilePageList();
+                break;
+            }
+        }
+        // 在导出栏对于点击其它不是按钮的空白区域的时候，将选择栏隐藏掉,当从无到显示出来动画时候，会执行这一步，但是因为类名是在10毫秒后加上去，在判断时候没有添加类名，所以能够执行
+        for (i = 0; i < 2; i++) {
+            hiddenList($('.export-info-choice-list>ul:eq('+ i +')'), 'down-transform-opacity-animate');
+        }
+        for (i = 0; i < 3; i++) {
+            hiddenList($('.export-prize-choice-list>ul:eq('+ i +')'), 'down-transform-opacity-animate');
+        }
+    }
+    EventUtil.addHandler($('.export-info-choice-list')[0], 'click', exportListClickListen);
+    EventUtil.addHandler($('.export-prize-choice-list')[0], 'click', exportListClickListen);
+    /**
+     * 
+     * @param {object} event 
+     */
+    function exportChoicedClickListen(event) {
+        var i;
+        for (i = 0; i < $(event.target).parent('ul')[0].getElementsByTagName('li').length; i++) {
+            if (ClassUtil.hasClass($(event.target).parent('ul')[0].getElementsByTagName('li')[i], 'export-choiced') == true) {
+                ClassUtil.removeClass($(event.target).parent('ul')[0].getElementsByTagName('li')[i], 'export-choiced');
+            }
+        }
+        /**
+         * @description 对按钮进行初始化
+         */
+        switch($(event.target).parents('ul:eq(1)').attr('class')) {
+            case 'file-grade-list down-transform-opacity-animate': {
+                $('.file-grade-switch')[0].innerText = event.target.innerText;
+                break;
+            }
+            case 'file-group-list down-transform-opacity-animate': {
+                $('.file-group-switch')[0].innerText = event.target.innerText;
+                break;
+            }
+            case 'file-awardTime-list down-transform-opacity-animate': {
+                $('.file-awardTime-switch')[0].innerText = event.target.innerText;
+                break;
+            }
+            case 'file-awardLevel-list down-transform-opacity-animate': {
+                $('.file-awardLevel-switch')[0].innerText = event.target.innerText;
+                break;
+            }
+            case 'file-rank-list down-transform-opacity-animate': {
+                $('.file-rank-switch')[0].innerText = event.target.innerText;
+                break;
+            }
+        }
+        $(event.target).parent('ul').attr('choiced', event.target.innerText);
+    }
+    EventUtil.addHandler($('.file-group-list')[0], 'click', exportChoicedClickListen);
+    EventUtil.addHandler($('.file-grade-list')[0], 'click', exportChoicedClickListen);
+    for (i = 0; i < 3; i++) {
+        EventUtil.addHandler($('.export-prize-choice-list>ul')[i], 'click', exportChoicedClickListen);
+    }
 
     /**
      * @description 上传文件的接口，这个是对奖项的导入
@@ -1508,7 +1729,7 @@ function informationDetailRequest(userInfoId) {
         // form.append("name", );
         form.append("file", file[0]);
         $.ajax({
-            url: 'http://'+ window.ip +':8080/qginfosystem/awardinfo/import',
+            url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/awardinfo/import',
             type: 'post',
             data: form,
             // dataType: 'form/data',
@@ -1518,6 +1739,11 @@ function informationDetailRequest(userInfoId) {
                 switch(responseObj.status) {
                     case '1': {
                         // 上传成功
+                        showMessage('上传成功');
+                        break;
+                    }
+                    case '9': {
+                        showMessage('文件不符合要求');
                         break;
                     }
                 }
@@ -1525,9 +1751,30 @@ function informationDetailRequest(userInfoId) {
             },
             error: function() {
                 // 请求失败时要干什么
-                
+                showMessage('请求失败');
             }
         });
+    }
+
+    /**
+     * @description 导出成员信息的请求
+     * @param {String} group 组别
+     * @param {String} grade 年级
+     */
+    function exportInfoRequest(grade, group) {
+        // window.location.href = ';
+        var IFrameRequest=document.createElement("iframe");
+            IFrameRequest.src='http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/exportsomeone?grade='+ grade +'&group='+ group;
+            IFrameRequest.style.display="none";
+            document.body.appendChild(IFrameRequest);
+    }
+
+    function exportPrizeRequest(awardTime, awardLevel, rank) {
+        // window.location.href = 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/exportsomeone?awardTime='+ awardTime +'&awardLevel='+ awardLevel +'&rank'+ rank;
+        var IFrameRequest=document.createElement("iframe");
+            IFrameRequest.src= 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/exportsomeone?awardTime='+ awardTime +'&awardLevel='+ awardLevel +'&rank'+ rank;
+            IFrameRequest.style.display="none";
+            document.body.appendChild(IFrameRequest);
     }
 
     /**
@@ -1536,10 +1783,9 @@ function informationDetailRequest(userInfoId) {
      */
     function uploadInfoRequest(file) {
         var form = new FormData();
-        console.log(file)
         form.append("file", file[0]);
         $.ajax({
-            url: 'http://'+ window.ip +':8080/qginfosystem/userinfo/import',
+            url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/import',
             type: 'post',
             data: form,
             dataType: 'json',
@@ -1565,16 +1811,16 @@ function informationDetailRequest(userInfoId) {
     /**
      * @description 奖项文件的导出
      */
-    function exportPrizeRequest() {
-        window.location.href = 'http://'+ window.ip +':8080/qginfosystem/awardinfo/export';
-    }
+    // function exportPrizeRequest() {
+    //     window.location.href = 'http://'+ window.ip +':'+ window.port +'/qginfosystem/awardinfo/export';
+    // }
 
     /**
      * @description 成员信息的导出
      */
-    function exportInfoRequest() {
-        window.location.href = 'http://'+ window.ip +':8080/qginfosystem/userinfo/export';
-    }
+    // function exportInfoRequest() {
+    //     window.location.href = 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/export';
+    // }
 })();
 
 /**
@@ -1588,7 +1834,7 @@ function informationDetailRequest(userInfoId) {
      */
     function searchRequest() {
         var jsonObj = {},
-            url = 'http://'+ window.ip +':8080/qginfosystem/user/queryinfo';
+            url = 'http://'+ window.ip +':'+ window.port +'/qginfosystem/user/queryinfo';
         jsonObj.name = $('#search-input')[0].value;
         jsonObj.page = page;
     
@@ -1637,7 +1883,7 @@ function informationDetailRequest(userInfoId) {
             userinfoArr = jsonObj.userInfoList;
         for (i = 0; i < userinfoArr.length; i++) {
             container.innerHTML += '<li userinfoid=' + userinfoArr[i].userInfoId + '>'
-                                + '<img src="http://'+ window.ip +':8080/qginfosystem/userImg/'+ userinfoArr[i].url +'?='+ Math.random() +'">'  
+                                + '<img src="http://'+ window.ip +':'+ window.port +'/qginfosystem/userImg/'+ userinfoArr[i].url +'?='+ Math.random() +'">'  
                                 + '<div>'
                                 + '<span>'+ userinfoArr[i].name +'</span>'
                                 + '<span>' + userinfoArr[i].grade + userinfoArr[i].group + '</span>'
@@ -1686,7 +1932,7 @@ function informationDetailRequest(userInfoId) {
             imgURL;
 
         for (let i = 0, j = 0; i < num; i++, j++) {
-            imgURL = 'http://' + ip + ':8080/qginfosystem/img/' + data[j].url;
+            imgURL = 'http://' + ip + ':'+ window.port +'/qginfosystem/img/' + data[j].url;
             prizeLi[i].setAttribute('data-id', data[j].awardId);
             prizeImg[i].setAttribute('src', imgURL);
             prizeName[i].innerHTML = data[j].awardName;
@@ -1760,10 +2006,9 @@ function informationDetailRequest(userInfoId) {
             $('.search-prize-list ul')[0].innerHTML = '';
             searchRequest();
         }
-
     }
 
-    EventUtil.addHandler($('#search-button img')[0], 'click', searchRenew)
+    EventUtil.addHandler($('#search-button img')[0], 'click', searchRenew);
     EventUtil.addHandler($('.search-container')[0], 'click', searchPageClickListen);
     EventUtil.addHandler($('#search-input')[0], 'keyup', searchRenew);
 })();
@@ -1783,7 +2028,7 @@ function informationDetailRequest(userInfoId) {
             case $('#auditing-all-permit')[0]: {
                 // 通过
                 for (i = 0; i < $('.auditing-check-box').length; i++) {
-                    if ($('.auditing-check-box')[i].checked == true) {
+                    if ($('.auditing-check-box:eq('+ i +')').attr('choiced') == 'true') {
                         resultArr.push({
                             userName: $('.auditing-check-box:eq('+ i +')').parents('li')[0].getAttribute('userName')
                         })
@@ -1801,7 +2046,7 @@ function informationDetailRequest(userInfoId) {
             case $('#auditing-all-reject')[0]: {
                 // 不通过
                 for (i = 0; i < $('.auditing-check-box').length; i++) {
-                    if ($('.auditing-check-box')[i].checked == true) {
+                    if ($('.auditing-check-box:eq('+ i +')').attr('choiced') == 'true') {
                         resultArr.push({
                             userName: $('.auditing-check-box:eq('+ i +')').parents('li')[0].getAttribute('userName')
                         })
@@ -1819,11 +2064,22 @@ function informationDetailRequest(userInfoId) {
             case $('#auditing-all-reset')[0]: {
                 // 重置
                 for (i = 0; i < $('.auditing-check-box').length; i++) {
-                    if ($('.auditing-check-box')[i].checked == true) {
-                        $('.auditing-check-box')[i].checked = false;
+                    if ($('.auditing-check-box:eq('+ i +')').attr('choiced') == 'true') {
+                        $('.auditing-check-box:eq('+ i +')').attr('choiced', 'false');
+                        $('.auditing-check-box:eq('+ i +')').removeClass('auditing-check-box-choiced')
                     }
                 }
                 break;
+            }
+        }
+        // 当点击的是选择框的时候
+        if (ClassUtil.hasClass(event.target, 'auditing-check-box') == true) {
+            if (ClassUtil.hasClass(event.target, 'auditing-check-box-choiced') == false) {
+                $(event.target).addClass('auditing-check-box-choiced');
+                $(event.target).attr('choiced', 'true');
+            } else {
+                $(event.target).removeClass('auditing-check-box-choiced');
+                $(event.target).attr('choiced', 'false');
             }
         }
     }
@@ -1839,7 +2095,7 @@ function informationDetailRequest(userInfoId) {
         jsonObj.passOrNot = permitOrnot;
         jsonObj.userList = choiceArray;
         $.ajax({
-            url: 'http://'+ window.ip +':8080/qginfosystem/user/review',
+            url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/user/review',
             type: 'post',
             data: JSON.stringify(jsonObj),
             dataType: 'json',
@@ -1896,7 +2152,7 @@ function getAutidingListRequest() {
     jsonObj.userName = '';
 
     $.ajax({
-        url: 'http://'+ window.ip +':8080/qginfosystem/user/listuser',
+        url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/user/listuser',
         type: 'post',
         data: JSON.stringify(jsonObj),
         crossDomain: true,
@@ -1960,7 +2216,7 @@ function setHeadPicRequest(file, userInfo) {
     form.append('userInfoId', userInfo);
     console.log(userInfo);
     $.ajax({
-        url: 'http://'+ window.ip +':8080/qginfosystem/userinfo/modifypicture',
+        url: 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/modifypicture',
         type: 'post',
         data: form,
         dataType: 'json',
@@ -2005,7 +2261,7 @@ function infoDetailPageRenew(jsonObj) {
     $inputs[6].value = userInfoObj.qq;
     $inputs[7].value = userInfoObj.email;
     $('#info-introduction')[0].value = userInfoObj.description;
-    $('.head-img-container>img').attr('src', 'http://'+ window.ip +':8080/qginfosystem/userImg/' + userInfoObj.url + '?='+ Math.random());
+    $('.head-img-container>img').attr('src', 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userImg/' + userInfoObj.url + '?='+ Math.random());
     $('.info-container').attr('userinfo', userInfoObj.userInfoId);
 }
 
@@ -2029,8 +2285,16 @@ function infoDetailPageRenew(jsonObj) {
 
             case $('.info-detail-button-container button')[1]: {
                 // 确定上传
-                var userInfo = $('.info-container').attr('userinfo');
-                setHeadPicRequest(files, userInfo);
+                // 当没有上传图片的时候
+                if (files == null) {
+                    showMessage('请选择上传的图片');
+                    return;
+                }
+                // 确定是否上传图片
+                showConfirm('确定修改头像？', function() {
+                    var userInfo = $('.info-container').attr('userinfo');
+                    setHeadPicRequest(files, userInfo);
+                })
                 break;
             }
         }
@@ -2051,8 +2315,10 @@ function infoDetailPageRenew(jsonObj) {
         }
     }
 })();
+/**
+ * @description 根据权限对成员信息页面的初始化
+ */
 function informationDetailPre() {
-    console.log()
     if (window.privilege == 1) {
         for (i = 0; i < $('.info-container-right li').length; i++) {
             $('.info-container-right li input:eq('+ i +')').attr('disabled', true);

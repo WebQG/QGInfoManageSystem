@@ -4,6 +4,7 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.service.UserInfoService;
 import org.apache.commons.io.FileUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -95,19 +96,45 @@ public class UserInfoController {
      * @return 状态码
      */
     @PostMapping("/modifypicture")
-    public ResponseData addUserInfoPicture(@RequestParam("picture")MultipartFile file, HttpServletRequest request, @RequestParam(value = "userInfoId", required = false) String userInfoId) {
-        String path=request.getServletContext().getRealPath("/");
-        return userInfoService.addUserInfoPicture(file,path,userInfoId);
+    public ResponseData addUserInfoPicture(@RequestParam("picture") MultipartFile file, HttpServletRequest request, @RequestParam(value = "userInfoId", required = false) String userInfoId) {
+        String path = request.getServletContext().getRealPath("/");
+        return userInfoService.addUserInfoPicture(file, path, userInfoId);
     }
 
     /**
      * 提供给安卓的成员信息搜索接口
+     *
      * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
      * @return 编号、名字、组别、年级、图片地址
      */
     @PostMapping("queryuserinfoandroid")
-    public ResponseData queryUserInfoAndroid(@RequestBody RequestData data){
+    public ResponseData queryUserInfoAndroid(@RequestBody RequestData data) {
         return userInfoService.queryUserInfoAndroid(data);
     }
 
+    /**
+     * 导出分类成员信息EXCEL
+     *
+     * @return 文件
+     */
+    @GetMapping("/exportsomeone")
+    public ResponseEntity<byte[]> exportSomeOne(@Param("grade")String grade ,@Param("group")String group ) throws IOException {
+        RequestData requestData=new RequestData();
+        requestData.setGrade(grade);
+        requestData.setGroup(group);
+        String fileName = null;
+        String path = userInfoService.exportSomeOneInfoExcel(requestData);
+        File file = new File(path);
+        HttpHeaders headers = new HttpHeaders();
+        //为了解决中文名称乱码问题
+        try {
+            fileName = new String(file.getName().getBytes("UTF-8"), "iso-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        headers.setContentDispositionFormData("attachment", fileName);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
+                headers, HttpStatus.OK);
+    }
 }

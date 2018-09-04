@@ -55,5 +55,11 @@ public interface UserService {
      */
     ResponseData getInfoByName(RequestData data);
 
+    /**
+     * 获取黑名单列表
+     * @param data 请求数据
+     * @return 返回黑名单列表还有状态码；
+     */
+    ResponseData getBlackList(RequestData data);
 
 }

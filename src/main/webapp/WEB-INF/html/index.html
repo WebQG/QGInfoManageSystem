@@ -85,6 +85,61 @@
                             <li><div class="load-button-layer"><span>导入成员</span></div><span>导入成员</span></li>
                             <li><div class="load-button-layer"><span>导出奖项</span></div><span>导出奖项</span></li>
                             <li><div class="load-button-layer"><span>导出成员</span></div><span>导出成员</span></li>
+                            <div class="export-info-choice-list">
+                                <div class="file-switch-container">
+                                    <div class="file-grade-switch">2017</div>
+                                    <div class="file-group-switch">前端组</div>
+                                </div>
+                                <button>确定</button>
+                                <ul class="file-grade-list">
+                                    <ul choiced="全部">
+                                        <li>全部</li>
+                                    </ul>
+                                </ul>
+                                <ul class="file-group-list">
+                                    <ul choiced="全部">
+                                        <li>全部</li>
+                                        <li>嵌入式组</li>
+                                        <li>前端组</li>
+                                        <li>后台组</li>
+                                        <li>移动组</li>
+                                        <li>手游组</li>
+                                        <li>数据挖掘组</li>
+                                        <li>设计师组</li>
+                                    </ul>
+                                </ul>
+                            </div>
+                            <div class="export-prize-choice-list">
+                                <div class="file-switch-container">
+                                    <div class="file-awardTime-switch">全部</div>
+                                    <div class="file-awardLevel-switch">全部</div>
+                                    <div class="file-rank-switch">全部</div>
+                                </div>
+                                <button>确定</button>
+                                <ul class="file-awardTime-list">
+                                    <ul choiced="全部">
+                                        <li>全部</li>
+                                    </ul>
+                                </ul>
+                                <ul class="file-awardLevel-list">
+                                    <ul choiced="全部">
+                                        <li>全部</li>
+                                        <li>省级</li>
+                                        <li>校级</li>
+                                        <li>国家级</li>
+                                        <!-- <li>级</li> -->
+                                    </ul>
+                                </ul>
+                                <ul class="file-rank-list">
+                                    <ul choiced="全部">
+                                        <li>全部</li>
+                                        <li>特等奖</li>
+                                        <li>一等奖</li>
+                                        <li>二等奖</li>
+                                        <li>三等奖</li>
+                                    </ul>
+                                </ul>
+                            </div>
                         </ul>
                         <div class="file-preview-container">
                             <ul class="file-preview-head">
@@ -92,11 +147,32 @@
                             <ul class="file-preview-value">
                             </ul>
                         </div>
+                        <div class="file-turn-page">
+                            <div class="turn-page-left-arrow"></div>
+                            <div class="page-container">
+                                <div class="move-container">
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                    <span class="page-number">1</span>
+                                </div>
+                            </div>
+                            <div class="turn-page-right-arrow"></div>
+                        </div>
                         <div class="file-control-container">
+                            <button id="model-download">下载模板</button>
                             <button>选择文件</button>
                             <input id="upload-button" type="file">
                             <button id="upload-submit">开始上传</button>
                             <button id="cancel-submit">取消上传</button>
+                            <div class="import-file-model-list">
+                                <span id="import-prize-model">奖项模板</span>
+                                <span id="import-info-model">个人信息模板</span>
+                            </div>
                         </div>
                     </div>
                      <!-- 审核页面 -->
@@ -104,7 +180,12 @@
                         <div class="auditing-choice-container">
                             <span>没有未激活用户</span>
                             <ul>
-                               
+                                <li userName='+ responseObj.userList[i].userName +'>
+                                <div choiced="false" class="auditing-check-box"></div>
+                                <span>选择</span>
+                                <span class="auditing-userName">账号： <b>365912613</b></span>
+                                <span class="auditing-name">真实姓名：<b>郑伟滨</b></span>
+                                </li>
                             </ul>
                         </div>
                         <div class="auditing-submit-container">

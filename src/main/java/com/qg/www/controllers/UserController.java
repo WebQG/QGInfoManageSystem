@@ -75,6 +75,15 @@ public class UserController {
         return userService.getUnavtivedUsers(data);
     }
 
+    /**
+     * 获取黑名单用户
+     * @param data 用户名
+     * @return 状态码和黑名单用户列表
+     */
+    @PostMapping("/listnotactive")
+    public ResponseData getBlackList(@RequestBody RequestData data){
+        return userService.getBlackList(data);
+    }
 
     @PostMapping("queryinfo")
     public ResponseData queryInfo(@RequestBody RequestData data) {

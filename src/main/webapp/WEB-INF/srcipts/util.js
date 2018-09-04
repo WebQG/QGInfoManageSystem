@@ -1,8 +1,9 @@
 window.ip = 'localhost';
 window.baseUrl = '';
+window.port = '8080';
 
 /**
- * 这是一个兼容性的监听事件。只需要直接用这个对象的方法就行。惰性加载函数，所以控制台输出只能是当前浏览器支持的监听事件
+ * 这是一个兼容性的监   听事件。只需要直接用这个对象的方法就行。惰性加载函数，所以控制台输出只能是当前浏览器支持的监听事件
  * @event
  * @function EventUtil.addHandler 全局的添加事件的方法。
  * @function EventUtil.removeHandler 全局的删除事件的方法。

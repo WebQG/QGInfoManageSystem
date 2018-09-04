@@ -349,7 +349,8 @@ function loginRequest() {
                     // message = encodeURIComponent('userName=' + responseObj.name) + '&' + encodeURI('userPrivilege=' + responseObj.privilege);
                     // encodeURIMessage = encodeURIComponent(message);
                     // url = window.baseUrl + 'index.html?' + encodeURIMessage;
-                    window.location.replace('index.html');
+                    window.location.replace('...')
+                    window.location.href = 'index.html';
                     break;
                 }
 

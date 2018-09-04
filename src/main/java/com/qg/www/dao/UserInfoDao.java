@@ -80,4 +80,11 @@ public interface UserInfoDao {
      * @return 编号、名字、组别、年级、图片地址
      */
     List<UserInfo> queryUserInfoByName(RequestData data);
+
+    /**
+     * 根据分类查找用户信息列表
+     * @param data 身份数据
+     * @return 用户列表
+     */
+    List<UserInfo> queryUserInfoByGroupAndGrade(RequestData data);
 }

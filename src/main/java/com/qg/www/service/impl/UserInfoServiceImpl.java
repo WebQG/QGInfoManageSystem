@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,14 +103,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ResponseData queryUserInfo(RequestData data) {
         ResponseData responseData = new ResponseData();
         // 分页信息，8条为一页
-        RowBounds rowBounds = new RowBounds(data.getPage() * 8,8);
+        RowBounds rowBounds = new RowBounds(data.getPage() * 8, 8);
         // 得到成员信息列表
-        List<UserInfo> userInfoList = userInfoDao.queryAppointedUserInfo(data,rowBounds);
+        List<UserInfo> userInfoList = userInfoDao.queryAppointedUserInfo(data, rowBounds);
         // 放入返回参数
-        if(!userInfoList.isEmpty()){
+        if (!userInfoList.isEmpty()) {
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserInfoList(userInfoList);
-        }else {
+        } else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
@@ -127,10 +128,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         // 根据ID得到成员信息
         UserInfo userInfo = userInfoDao.getUserInfoById(data);
         // 加入返回参数
-        if(null != userInfo){
+        if (null != userInfo) {
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserInfo(userInfo);
-        }else {
+        } else {
             responseData.setStatus(Status.INFO_LACK.getStatus());
             responseData.setUserInfo(new UserInfo());
         }
@@ -149,32 +150,32 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ResponseData addUserInfoPicture(MultipartFile picture, String path, String userInfoId) {
         ResponseData responseData = new ResponseData();
         String fileName;
-        System.out.println(picture==null);
+        System.out.println(picture == null);
         //上传图片不为空，获取原始文件名
         if (null != picture) {
             fileName = picture.getOriginalFilename();
             System.out.println(fileName);
             //判断图片格式
-            if (fileName.endsWith(".jpg")||fileName.endsWith(".png")){
+            if (fileName.endsWith(".jpg") || fileName.endsWith(".png")) {
                 //创建文件夹
-                File dir=new File(path+File.separator+"userImg");
-                if (!dir.exists()){
+                File dir = new File(path + File.separator + "userImg");
+                if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                File storeFile=new File(dir.getAbsolutePath()+File.separator+userInfoId+".jpg");
+                File storeFile = new File(dir.getAbsolutePath() + File.separator + userInfoId + ".jpg");
                 try {
                     picture.transferTo(storeFile);
-                   /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));*/
-                    userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId),userInfoId+".jpg");
+                    /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));*/
+                    userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId), userInfoId + ".jpg");
                     responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
                     //存储文件失败
                     responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
                 }
-            }else {
+            } else {
                 responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
             }
-        }else {
+        } else {
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
         }
         return responseData;
@@ -182,6 +183,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     /**
      * 提供给安卓的成员信息搜索接口
+     *
      * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
      * @return 编号、名字、组别、年级、图片地址
      */
@@ -189,22 +191,50 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ResponseData queryUserInfoAndroid(RequestData data) {
         ResponseData responseData = new ResponseData();
         List<UserInfo> userInfoList;
-        if(null != data.getName()){
+        if (null != data.getName()) {
             // 模糊搜索
             userInfoList = userInfoDao.queryUserInfoByName(data);
-        }else{
+        } else {
             // 精确搜索
             userInfoList = userInfoDao.queryAppointedUserInfo(data);
         }
 
-        if(!userInfoList.isEmpty()){
+        if (!userInfoList.isEmpty()) {
             // 将成员列表放入参数返回
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserInfoList(userInfoList);
-        }else {
+        } else {
             responseData.setUserInfo(new UserInfo());
             responseData.setStatus(Status.INFO_LACK.getStatus());
         }
         return responseData;
+    }
+
+    /**
+     * 导出分类成员信息
+     *
+     * @param requestData 请求信息参数
+     * @return 文件路径
+     */
+    @Override
+    public String exportSomeOneInfoExcel(RequestData requestData) {
+        String grade = requestData.getGrade();
+        String group = requestData.getGroup();
+        List<UserInfo> userInfoList;
+        //当数据全为空的时候导出所有成员信息，否则，按照分类导出。
+        if (grade == null && group == null) {
+            userInfoList = userInfoDao.queryUserInfo();
+        } else {
+            userInfoList = userInfoDao.queryUserInfoByGroupAndGrade(requestData);
+        }
+        //定义路径
+        String path;
+        try {
+            path = ExcelTableUtil.createUserExcel(userInfoList);
+        } catch (IOException e) {
+            //创建失败则返回错误提示文件的路径。
+            path = new File("ERROR.txt").getAbsolutePath();
+        }
+        return path;
     }
 }

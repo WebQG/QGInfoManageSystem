@@ -85,7 +85,7 @@ public class AwardInfoController {
     @PostMapping("/modifypicture")
     public ResponseData addAwardInfoPicture(@RequestParam("picture") MultipartFile file, HttpServletRequest request, @RequestParam(value = "awardId", required = false) String awardId) {
         String path = request.getServletContext().getRealPath("");
-        System.out.println("上传奖项图片ID："+awardId);
+        System.out.println("上传奖项图片ID：" + awardId);
         return service.addAwardInfoPicture(file, path, awardId);
     }
 
@@ -99,4 +99,33 @@ public class AwardInfoController {
     public ResponseData queryAwardInfoAndroid(@RequestBody RequestData data) {
         return service.queryAwardInfoAndroid(data);
     }
+
+    /**
+     * 分类导出奖项信息；
+     *
+     * @return EXCEL文件
+     * @throws IOException IO异常
+     */
+    @GetMapping("/exportsomeaward")
+    public ResponseEntity<byte[]> exportSomeAward(@Param("rank")String rank,@Param("awardTime")String awardTime,@Param("awardLevel") String awardLevel) throws IOException {
+        RequestData data=new RequestData();
+        data.setAwardTime(awardTime);
+        data.setAwardLevel(awardLevel);
+        data.setRank(rank);
+        String path = service.exportSomeAwardInfo(data);
+        File file = new File(path);
+        HttpHeaders headers = new HttpHeaders();
+        //为了解决中文名称乱码问题
+        String fileName = null;
+        try {
+            fileName = new String(file.getName().getBytes("UTF-8"), "iso-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        headers.setContentDispositionFormData("attachment", fileName);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
+                headers, HttpStatus.OK);
+    }
+
 }

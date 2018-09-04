@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         String userName;
         //获取UserList;
         List<User> userList = data.getUserList();
-        //获取操作码，0表示撤销用户注册，1表示激活用户；
+        //获取操作码，0表示不允许用户注册暂时加入黑名单列表，1表示激活用户；
         Integer passOrNot = data.getPassOrNot();
         System.out.println(privilege+"service层的权限值");
         //如果是管理员且数据没错误；
@@ -155,13 +155,24 @@ public class UserServiceImpl implements UserService {
                     responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
                     return responseData;
                 }
-            } else {
+            } else if (UserOperate.CANCEL_REGISTER.getUserOperateCode().equals(passOrNot)){
                 //对用户进行遍历撤销；
                 while (iterator.hasNext()) {
                     userName = iterator.next().getUserName();
                     solveNum = userDao.deleteUserByUserName(userName);
                 }
                 //判断是否撤销失败
+                if (solveNum == 0) {
+                    responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
+                    return responseData;
+                }
+            }else {
+                //添加进黑名单列表
+                while (iterator.hasNext()) {
+                    userName = iterator.next().getUserName();
+                    solveNum = userDao.review(userName, UserOperate.BLACKLIST_USER.getUserOperateCode());
+                }
+                //判断是否处理失败
                 if (solveNum == 0) {
                     responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
                     return responseData;
@@ -191,6 +202,21 @@ public class UserServiceImpl implements UserService {
             List<User> userList = userDao.queryUserByStatus(UserOperate.NOT_ACTIVE.getUserOperateCode());
             responseData.setStatus(Status.NORMAL.getStatus());
             responseData.setUserList(userList);
+        return responseData;
+    }
+
+    /**
+     * 获取黑名单列表
+     *
+     * @param data 请求数据
+     * @return 返回黑名单列表还有状态码；
+     */
+    @Override
+    public ResponseData getBlackList(RequestData data) {
+        ResponseData responseData = new ResponseData();
+        List<User> userList = userDao.queryUserByStatus(UserOperate.BLACKLIST_USER.getUserOperateCode());
+        responseData.setStatus(Status.NORMAL.getStatus());
+        responseData.setUserList(userList);
         return responseData;
     }
 

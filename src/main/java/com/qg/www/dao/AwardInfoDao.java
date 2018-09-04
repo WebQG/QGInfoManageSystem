@@ -79,4 +79,12 @@ public interface AwardInfoDao {
      * @return 编号、名称、时间、参赛学生、图片地址
      */
     List<AwardInfo> queryAwardInfoByName(RequestData data);
+
+    /**
+     * 查询奖项信息；
+     *
+     * @param data 分类
+     * @return 奖项列表
+     */
+    List<AwardInfo> queryAwardInfoByTimeAndRank(RequestData data);
 }

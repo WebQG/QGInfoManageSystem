@@ -87,4 +87,12 @@ public interface AwardInfoDao {
      * @return 奖项列表
      */
     List<AwardInfo> queryAwardInfoByTimeAndRank(RequestData data);
+
+    /**
+     * 修改奖项的详细信息
+     *
+     * @param data 修改后的奖项信息
+     * @return 状态码
+     */
+    int updateAwardInfo(RequestData data);
 }

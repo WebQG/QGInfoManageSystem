@@ -87,4 +87,12 @@ public interface UserInfoDao {
      * @return 用户列表
      */
     List<UserInfo> queryUserInfoByGroupAndGrade(RequestData data);
+
+    /**
+     * 修改成员详细信息
+     *
+     * @param data 成员信息
+     * @return 状态码
+     */
+    int updateUserInfo(RequestData data);
 }

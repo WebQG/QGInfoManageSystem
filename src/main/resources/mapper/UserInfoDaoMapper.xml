@@ -63,4 +63,39 @@
 
         </if>
     </select>
+    <update id="updateUserInfo">
+        UPDATE userinfo SET
+        userinfo_id = ${userInfoId}
+        <choose>
+            <when test="null != name">
+                ,name = ${name}
+            </when>
+            <when test="null != group">
+                ,qggroup = ${group}
+            </when>
+            <when test="null != college">
+                ,college = ${college}
+            </when>
+            <when test="null != grade">
+                ,grade = ${grade}
+            </when>
+            <when test="null != tel">
+                ,tel = ${tel}
+            </when>
+            <when test="null != birthplace">
+                ,birthplace = ${birthplace}
+            </when>
+            <when test="null != qq">
+                ,qq = ${qq}
+            </when>
+            <when test="null != email">
+                ,email = ${email}
+            </when>
+            <when test="null != description">
+                ,description = ${description}
+            </when>
+        </choose>
+
+        WHERE userinfo_id = ${userInfoId}
+    </update>
 </mapper>

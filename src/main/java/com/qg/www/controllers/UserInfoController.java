@@ -137,4 +137,14 @@ public class UserInfoController {
         return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
                 headers, HttpStatus.OK);
     }
+
+    /**
+     * 修改成员详细信息
+     * @param data 成员信息
+     * @return 状态码
+     */
+    @PostMapping("updateUserInfo")
+    public ResponseData updateUserInfo(@RequestBody RequestData data){
+        return userInfoService.updateUserInfo(data);
+    }
 }

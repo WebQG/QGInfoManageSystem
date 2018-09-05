@@ -128,4 +128,14 @@ public class AwardInfoController {
                 headers, HttpStatus.OK);
     }
 
+    /**
+     * 修改奖项的详细信息
+     * @param data  修改后的奖项信息
+     * @return 状态码
+     */
+    @PostMapping("/updateAwardInfo")
+    public ResponseData updateAwardInfo(@RequestBody RequestData data){
+        return service.updateAwardInfo(data);
+    }
+
 }

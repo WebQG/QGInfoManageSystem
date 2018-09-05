@@ -63,4 +63,11 @@ public interface UserInfoService {
      */
     String exportSomeOneInfoExcel(RequestData requestData);
 
+    /**
+     * 修改成员详细信息
+     *
+     * @param data 成员信息
+     * @return 状态码
+     */
+    ResponseData updateUserInfo(RequestData data);
 }

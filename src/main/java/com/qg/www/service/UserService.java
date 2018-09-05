@@ -34,11 +34,11 @@ public interface UserService {
     /**
      * 账户审核
      *
-     * @param data 处理的用户名和是否激活用户的标识
+     * @param data      处理的用户名和是否激活用户的标识
      * @param previlege 权限值
      * @return 状态码
      */
-    ResponseData userReview(RequestData data,Integer previlege);
+    ResponseData userReview(RequestData data, Integer previlege);
 
     /**
      * 获取未激活用户列表
@@ -50,6 +50,7 @@ public interface UserService {
 
     /**
      * 根据名称查找信息
+     *
      * @param data 名称
      * @return 编号、名字、组别、年级、图片地址 或  编号、名称、时间、参赛学生、图片地址
      */
@@ -57,9 +58,9 @@ public interface UserService {
 
     /**
      * 获取黑名单列表
+     *
      * @param data 请求数据
      * @return 返回黑名单列表还有状态码；
      */
     ResponseData getBlackList(RequestData data);
-
 }

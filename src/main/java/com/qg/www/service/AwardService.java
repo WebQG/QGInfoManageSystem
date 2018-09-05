@@ -5,6 +5,7 @@ import com.qg.www.dtos.ResponseData;
 import com.qg.www.models.AwardInfo;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.Request;
 
 import java.util.List;
 
@@ -71,4 +72,12 @@ public interface AwardService {
      * @return 文件路径；
      */
     String exportSomeAwardInfo(RequestData data);
+
+    /**
+     * 修改奖项的详细信息
+     *
+     * @param data 修改后的奖项信息
+     * @return 状态码
+     */
+    ResponseData updateAwardInfo(RequestData data);
 }

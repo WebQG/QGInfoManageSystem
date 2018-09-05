@@ -237,4 +237,18 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         return path;
     }
+
+    /**
+     * 修改成员详细信息
+     *
+     * @param data 成员信息
+     * @return 状态码
+     */
+    @Override
+    public ResponseData updateUserInfo(RequestData data) {
+        userInfoDao.updateUserInfo(data);
+        ResponseData responseData = new ResponseData();
+        responseData.setStatus(Status.NORMAL.getStatus());
+        return responseData;
+    }
 }

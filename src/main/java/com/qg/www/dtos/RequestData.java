@@ -70,4 +70,52 @@ public class RequestData {
      * 成员年级
      */
     private String grade;
+    /**
+     * 奖项名称
+     */
+    private String awardName;
+    /**
+     * 获奖项目
+     */
+    private String awardProject;
+    /**
+     * 颁奖部门
+     */
+    private String department;
+    /**
+     * 指导老师
+     */
+    private String leadTeacher;
+    /**
+     * 参赛成员
+     */
+    private String joinStudent;
+    /**
+     * 奖项简介
+     */
+    private String awardDescription;
+    /**
+     * 成员学院
+     */
+    private String college;
+    /**
+     * 成员电话
+     */
+    private String tel;
+    /**
+     * 成员生日
+     */
+    private String birthplace;
+    /**
+     * qq号码
+     */
+    private String qq;
+    /**
+     * 成员邮箱
+     */
+    private String email;
+    /**
+     * 成员简述
+     */
+    private String description;
 }

@@ -10,6 +10,7 @@ import com.qg.www.utils.ExcelTableUtil;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.Request;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -27,6 +28,7 @@ import java.util.List;
 public class AwardServiceImpl implements AwardService {
     @Resource
     private AwardInfoDao awardInfoDao;
+
     /**
      * 导出excel表格业务
      *
@@ -249,5 +251,20 @@ public class AwardServiceImpl implements AwardService {
             path = new File("ERROT.txt").getAbsolutePath();
         }
         return path;
+    }
+
+    /**
+     * 修改奖项的详细信息
+     *
+     * @param data 修改后的奖项信息
+     * @return 状态码
+     */
+    @Override
+    public ResponseData updateAwardInfo(RequestData data) {
+        System.out.println(awardInfoDao.updateAwardInfo(data));
+        // 返回正常状态码
+        ResponseData responseData = new ResponseData();
+        responseData.setStatus(Status.NORMAL.getStatus());
+        return null;
     }
 }

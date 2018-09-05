@@ -239,6 +239,7 @@ public class AwardServiceImpl implements AwardService {
         if (awardTime == null && rank == null && awardLevel == null) {
             awardInfoList = awardInfoDao.queryAwardInfo();
         } else {
+            data.setAwardTime(awardTime+"年");
             awardInfoList = awardInfoDao.queryAwardInfoByTimeAndRank(data);
         }
         String path;

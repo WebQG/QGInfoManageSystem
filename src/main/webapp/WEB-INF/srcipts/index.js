@@ -1772,7 +1772,7 @@ function informationDetailRequest(userInfoId) {
     function exportPrizeRequest(awardTime, awardLevel, rank) {
         // window.location.href = 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/exportsomeone?awardTime='+ awardTime +'&awardLevel='+ awardLevel +'&rank'+ rank;
         var IFrameRequest=document.createElement("iframe");
-            IFrameRequest.src= 'http://'+ window.ip +':'+ window.port +'/qginfosystem/userinfo/exportsomeone?awardTime='+ awardTime +'&awardLevel='+ awardLevel +'&rank'+ rank;
+            IFrameRequest.src= 'http://'+ window.ip +':'+ window.port +'/qginfosystem/awardinfo/exportsomeaward?awardTime='+ awardTime +'&awardLevel='+ awardLevel +'&rank='+ rank;
             IFrameRequest.style.display="none";
             document.body.appendChild(IFrameRequest);
     }

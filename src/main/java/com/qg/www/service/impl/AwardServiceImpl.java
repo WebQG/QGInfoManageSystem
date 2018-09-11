@@ -4,13 +4,13 @@ import com.qg.www.dao.AwardInfoDao;
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
+import com.qg.www.enums.UserOperate;
 import com.qg.www.models.AwardInfo;
 import com.qg.www.service.AwardService;
 import com.qg.www.utils.ExcelTableUtil;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.Request;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author net
@@ -32,14 +33,30 @@ public class AwardServiceImpl implements AwardService {
     /**
      * 导出excel表格业务
      *
+     * @param awardInfoId 奖项ID
      * @return 文件路径
      */
     @Override
-    public String exportExcel() {
+    public String exportExcel(String awardInfoId) {
         //定义路径变量；
         String path = "";
-        //查询全部信息
-        List<AwardInfo> awardInfoList = awardInfoDao.queryAwardInfo();
+        List<AwardInfo> awardInfoList = new ArrayList<>();
+        if (awardInfoId == null || "".equals(awardInfoId)) {
+            //查询全部信息
+            awardInfoList = awardInfoDao.queryAwardInfo();
+        } else {
+            //导出单一信息；
+            RequestData data = new RequestData();
+            //处理异常；
+            try {
+                data.setAwardId(Integer.valueOf(awardInfoId));
+            } catch (NumberFormatException e) {
+                //出现
+                System.out.println("页面数据被修改，传递的奖项ID格式错误！");
+                return new File("ERROR.txt").getAbsolutePath();
+            }
+            awardInfoList.add(awardInfoDao.getAwardInfoById(data));
+        }
         //奖项列表不为空，进行excel文件的创建；
         if (!awardInfoList.isEmpty()) {
             try {
@@ -113,8 +130,8 @@ public class AwardServiceImpl implements AwardService {
         // 分页、每页8条
         RowBounds rowBounds = new RowBounds(data.getPage() * 8, 8);
         // 在尾部增加年
-        if (null != data.getAwardTime() && "" != data.getAwardTime()) {
-            data.setAwardTime(data.getAwardTime() + "年");
+        if (null != data.getAwardTime() && !"".equals(data.getAwardTime())) {
+            data.setAwardTime(data.getAwardTime());
         }
         // 得到奖项信息列表
         List<AwardInfo> awardInfoList = awardInfoDao.queryAppointedAwardInfo(data, rowBounds);
@@ -159,7 +176,7 @@ public class AwardServiceImpl implements AwardService {
      * @return 状态码
      */
     @Override
-    public ResponseData addAwardInfoPicture(MultipartFile picture, String path, String awardId) {
+    public synchronized ResponseData addAwardInfoPicture(MultipartFile picture, String path, String awardId) {
         ResponseData responseData = new ResponseData();
         String fileName;
         System.out.println("奖项图片是否空" + picture == null);
@@ -173,11 +190,11 @@ public class AwardServiceImpl implements AwardService {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                File storeFile = new File(dir.getAbsolutePath() + File.separator + awardId + ".jpg");
+                String uuid=UUID.randomUUID()+"";
+                File storeFile = new File(dir.getAbsolutePath() + File.separator + uuid+awardId + ".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\img"+File.separator+awardId+".jpg"));*/
-                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId), awardId + ".jpg");
+                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId), uuid+awardId + ".jpg");
                     responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
                     //存储失败
@@ -205,7 +222,7 @@ public class AwardServiceImpl implements AwardService {
         ResponseData responseData = new ResponseData();
         List<AwardInfo> awardInfoList;
         if (null != data.getAwardTime() && !"".equals(data.getAwardTime())) {
-            data.setAwardTime(data.getAwardTime() + "年");
+            data.setAwardTime(data.getAwardTime());
         }
         if (null != data.getName()) {
             // 模糊搜索
@@ -238,17 +255,16 @@ public class AwardServiceImpl implements AwardService {
         String awardLevel = data.getAwardLevel();
         String rank = data.getRank();
         List<AwardInfo> awardInfoList;
-        if (awardTime == null && rank == null && awardLevel == null) {
+        if ((awardTime == null || "".equals(awardTime)) && (rank == null || "".equals(rank)) && (awardLevel == null || "".equals(awardLevel))) {
             awardInfoList = awardInfoDao.queryAwardInfo();
         } else {
-            data.setAwardTime(awardTime+"年");
             awardInfoList = awardInfoDao.queryAwardInfoByTimeAndRank(data);
         }
         String path;
         try {
             path = ExcelTableUtil.createAwardExcel(awardInfoList);
         } catch (IOException e) {
-            path = new File("ERROT.txt").getAbsolutePath();
+            path = new File("ERROR.txt").getAbsolutePath();
         }
         return path;
     }
@@ -265,6 +281,30 @@ public class AwardServiceImpl implements AwardService {
         // 返回正常状态码
         ResponseData responseData = new ResponseData();
         responseData.setStatus(Status.NORMAL.getStatus());
-        return null;
+        return responseData;
+    }
+
+    /**
+     * 删除奖项详细信息
+     *
+     * @param data 包含奖项的ID
+     * @return 状态码
+     */
+    @Override
+    public ResponseData deleteAwardInfo(RequestData data, Integer privilege) {
+        ResponseData responseData = new ResponseData();
+        //判断有没有权限；
+        if (!UserOperate.ADMIN_PRIVILEGE.getUserOperateCode().equals(privilege)) {
+            responseData.setStatus(Status.NO_PROVILEGE.getStatus());
+            return responseData;
+        }
+        //删除奖项；
+        int solveNum = awardInfoDao.deleteAwardInfo(data);
+        if (solveNum == 0) {
+            responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        } else {
+            responseData.setStatus(Status.NORMAL.getStatus());
+        }
+        return responseData;
     }
 }

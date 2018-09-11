@@ -48,9 +48,9 @@ public class UserInfoController {
      * @return 成员信息表格
      */
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportUserInfo() throws IOException {
+    public ResponseEntity<byte[]> exportUserInfo(@Param("userInfoId") String userInfoId) throws IOException {
         String fileName = null;
-        String path = userInfoService.exportExcel();
+        String path = userInfoService.exportExcel(userInfoId);
         File file = new File(path);
         HttpHeaders headers = new HttpHeaders();
         //为了解决中文名称乱码问题
@@ -118,8 +118,8 @@ public class UserInfoController {
      * @return 文件
      */
     @GetMapping("/exportsomeone")
-    public ResponseEntity<byte[]> exportSomeOne(@Param("grade")String grade ,@Param("group")String group ) throws IOException {
-        RequestData requestData=new RequestData();
+    public ResponseEntity<byte[]> exportSomeOne(@Param("grade") String grade, @Param("group") String group) throws IOException {
+        RequestData requestData = new RequestData();
         requestData.setGrade(grade);
         requestData.setGroup(group);
         String fileName = null;
@@ -140,11 +140,39 @@ public class UserInfoController {
 
     /**
      * 修改成员详细信息
+     *
      * @param data 成员信息
      * @return 状态码
      */
-    @PostMapping("updateUserInfo")
-    public ResponseData updateUserInfo(@RequestBody RequestData data){
+    @PostMapping("updateuserinfo")
+    public ResponseData updateUserInfo(@RequestBody RequestData data) {
         return userInfoService.updateUserInfo(data);
+    }
+
+    /**
+     * 删除成员信息
+     *
+     * @param data 成员编号
+     * @return 状态码
+     */
+    @PostMapping("/delete")
+    public ResponseData deleteUserInfo(@RequestBody RequestData data, HttpServletRequest request) {
+        //获取权限；
+        Integer privilege = (Integer) request.getSession().getAttribute("privilege");
+        return userInfoService.deleteUserInfo(data, privilege);
+    }
+
+    /**
+     * 查看某位成员获取的奖项信息
+     *
+     * @param request 请求，用于判断权限
+     * @param data    成员的ID
+     * @return 奖项信息
+     */
+    @PostMapping("/gotawards")
+    public ResponseData showSomeOneAwards(@RequestBody RequestData data, HttpServletRequest request) {
+        //获取登录状态；
+        String privilege = (String) request.getSession().getAttribute("name");
+        return userInfoService.showSomeOneAwards(data, privilege);
     }
 }

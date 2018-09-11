@@ -38,7 +38,7 @@
         </choose>
     </select>
     <select id="getUserInfoById" resultMap="iBaseResultMap">
-        SELECT * FROM userinfo WHERE userinfo_id = ${userInfoId};
+        SELECT * FROM userinfo WHERE userinfo_id = '${userInfoId}';
     </select>
     <select id="queryUserInfoByName" resultMap="iBaseResultMap">
         SELECT userinfo_id,name,grade,qggroup,url FROM userinfo
@@ -52,50 +52,53 @@
         UPDATE userinfo SET url='${pictureName}' WHERE userinfo_id=${userInfoId};
     </update>
     <select id="queryUserInfoByGroupAndGrade" resultMap="iBaseResultMap">
-        <if test="grade==null and group!=null">
+        <if test="(grade==null or grade=='') and group!=null">
             SELECT * FROM userinfo WHERE qggroup='${group}';
         </if>
-        <if test="grade!=null and group==null">
+        <if test="grade!=null and (group==null or group=='')">
             SELECT * FROM userinfo WHERE grade='${grade}';
         </if>
-        <if test="grade!=null and group!=null">
+        <if test="(grade!=null and grade!='') and (group!=null and  group!='')">
             SELECT * FROM userinfo WHERE qggroup='${group}' and grade='${grade}';
 
         </if>
     </select>
     <update id="updateUserInfo">
         UPDATE userinfo SET
-        userinfo_id = ${userInfoId}
-        <choose>
-            <when test="null != name">
-                ,name = ${name}
-            </when>
-            <when test="null != group">
-                ,qggroup = ${group}
-            </when>
-            <when test="null != college">
-                ,college = ${college}
-            </when>
-            <when test="null != grade">
-                ,grade = ${grade}
-            </when>
-            <when test="null != tel">
-                ,tel = ${tel}
-            </when>
-            <when test="null != birthplace">
-                ,birthplace = ${birthplace}
-            </when>
-            <when test="null != qq">
-                ,qq = ${qq}
-            </when>
-            <when test="null != email">
-                ,email = ${email}
-            </when>
-            <when test="null != description">
-                ,description = ${description}
-            </when>
-        </choose>
+        userinfo_id = '${userInfoId}'
 
-        WHERE userinfo_id = ${userInfoId}
+            <if test="null != name">
+                ,name = '${name}'
+            </if>
+            <if test="null != group">
+                ,qggroup = '${group}'
+            </if>
+            <if test="null != college">
+                ,college = '${college}'
+            </if>
+            <if test="null != grade">
+                ,grade = '${grade}'
+            </if>
+            <if test="null != tel">
+                ,tel = '${tel}'
+            </if>
+            <if test="null != birthplace">
+                ,birthplace = '${birthplace}'
+            </if>
+            <if test="null != qq">
+                ,qq = '${qq}'
+            </if>
+            <if test="null != email">
+                ,email = '${email}'
+            </if>
+            <if test="null != description">
+                ,description = '${description}'
+            </if>
+
+
+        WHERE userinfo_id = '${userInfoId}'
     </update>
+    <delete id="deleteUserInfo">
+        DELETE FROM userinfo WHERE userinfo_id='${userInfoId}';
+    </delete>
 </mapper>

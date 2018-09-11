@@ -13,9 +13,10 @@ public interface UserInfoService {
     /**
      * 导出excel表格业务
      *
+     * @param userInfoId 成员信息ID
      * @return 文件路径
      */
-    String exportExcel();
+    String exportExcel(String userInfoId);
 
     /**
      * 导入excel文件
@@ -28,6 +29,7 @@ public interface UserInfoService {
 
     /**
      * 根据关键字查询成员信息
+     *
      * @param data 所属组别、所属年级
      * @return 编号、名字、组别、年级、图片地址
      */
@@ -35,10 +37,12 @@ public interface UserInfoService {
 
     /**
      * 根据ID查找成员信息
+     *
      * @param data 成员ID
      * @return 成员详细信息
      */
     ResponseData getUserInfo(RequestData data);
+
     /**
      * 添加成员头像
      *
@@ -51,6 +55,7 @@ public interface UserInfoService {
 
     /**
      * 提供给安卓的成员信息搜索接口
+     *
      * @param data key 1为模糊搜索 2为精确搜索 、所属组别、所属年级
      * @return 编号、名字、组别、年级、图片地址
      */
@@ -58,6 +63,7 @@ public interface UserInfoService {
 
     /**
      * 导出分类成员信息
+     *
      * @param requestData 请求信息参数
      * @return 文件路径
      */
@@ -70,4 +76,22 @@ public interface UserInfoService {
      * @return 状态码
      */
     ResponseData updateUserInfo(RequestData data);
+
+    /**
+     * 删除成员信息
+     *
+     * @param privilege 操作权限
+     * @param data      成员ID
+     * @return 状态码；
+     */
+    ResponseData deleteUserInfo(RequestData data, Integer privilege);
+
+    /**
+     * 查看某位成员的获奖信息
+     *
+     * @param data 成员的ID
+     * @param privilege 权限
+     * @return 奖项列表和状态码
+     */
+    ResponseData showSomeOneAwards(RequestData data, String privilege);
 }

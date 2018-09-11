@@ -95,4 +95,10 @@ public interface UserInfoDao {
      * @return 状态码
      */
     int updateUserInfo(RequestData data);
+    /**
+     * 删除成员详细信息；
+     * @param data 成员的ID
+     * @return 删除条数；
+     */
+    int deleteUserInfo(RequestData data);
 }

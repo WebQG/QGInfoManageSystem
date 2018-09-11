@@ -4,13 +4,21 @@ import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
 import com.qg.www.service.UserService;
+import org.apache.commons.io.FileUtils;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author net
@@ -77,11 +85,12 @@ public class UserController {
 
     /**
      * 获取黑名单用户
+     *
      * @param data 用户名
      * @return 状态码和黑名单用户列表
      */
     @PostMapping("/listnotactive")
-    public ResponseData getBlackList(@RequestBody RequestData data){
+    public ResponseData getBlackList(@RequestBody RequestData data) {
         return userService.getBlackList(data);
     }
 
@@ -109,14 +118,45 @@ public class UserController {
         ResponseData responseData = new ResponseData();
         responseData.setStatus(Status.NORMAL.getStatus());
         responseData.setName((String) session.getAttribute("name"));
-        if (responseData.getName() == null){
+        if (responseData.getName() == null) {
             try {
                 response.sendRedirect("login.html");
             } catch (IOException e) {
                 responseData.setStatus(Status.SERVER_HAPPEN_ERROR.getStatus());
             }
         }
-            responseData.setPrivilege((Integer) session.getAttribute("privilege"));
+        responseData.setPrivilege((Integer) session.getAttribute("privilege"));
         return responseData;
+    }
+
+    /**
+     * 下载模板文件
+     *
+     * @param type    奖项信息模板或者成员信息模板
+     * @param request 请求
+     * @return 模板文件
+     */
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downLoadModeFile(@Param("type") String type, HttpServletRequest request) throws IOException {
+        String fileName = null;
+        File file;
+        if (type == null || "".equals(type)) {
+            //成员信息模板
+            file = new File(request.getServletContext().getRealPath("") +"奖项信息.xls");
+        }else {
+            //奖项信息模板
+            file=new File(request.getServletContext().getRealPath("") +"成员信息.xls");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        //为了解决中文名称乱码问题
+        try {
+            fileName = new String(file.getName().getBytes("UTF-8"), "iso-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        headers.setContentDispositionFormData("attachment", fileName);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        return new ResponseEntity<>(FileUtils.readFileToByteArray(file),
+                headers, HttpStatus.OK);
     }
 }

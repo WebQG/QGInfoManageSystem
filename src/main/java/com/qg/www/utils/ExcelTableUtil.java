@@ -180,15 +180,33 @@ public class ExcelTableUtil {
                         //读取第一行真实数据；
                         if (context.getCurrentRowNum() > 0) {
                             UserInfo userInfo = new UserInfo();
-                            userInfo.setName(object.get(0));
-                            userInfo.setGroup(object.get(1));
-                            userInfo.setCollege(object.get(2));
-                            userInfo.setGrade(object.get(3));
-                            userInfo.setTel(object.get(4));
-                            userInfo.setBirthplace(object.get(5));
-                            userInfo.setQq(object.get(6));
-                            userInfo.setEmail(object.get(7));
-                            userInfo.setDescription(object.get(8));
+                            if (object.size() >= 1) {
+                                userInfo.setName(object.get(0));
+                            }
+                            if (object.size() >= 2) {
+                                userInfo.setGroup(object.get(1));
+                            }
+                            if (object.size() >= 3) {
+                                userInfo.setCollege(object.get(2));
+                            }
+                            if (object.size() >= 4) {
+                                userInfo.setGrade(object.get(3));
+                            }
+                            if (object.size() >= 5) {
+                                userInfo.setTel(object.get(4));
+                            }
+                            if (object.size() >= 6) {
+                                userInfo.setBirthplace(object.get(5));
+                            }
+                            if (object.size() >= 7) {
+                                userInfo.setQq(object.get(6));
+                            }
+                            if (object.size() >= 8) {
+                                userInfo.setEmail(object.get(7));
+                            }
+                            if (object.size() >= 9) {
+                                userInfo.setDescription(object.get(8));
+                            }
                             userInfoList.add(userInfo);
                         }
                     }
@@ -221,7 +239,7 @@ public class ExcelTableUtil {
      * @return 奖项信息列表
      */
     public static List<AwardInfo> readAwardInfoExcel(String filePath) {
-        final List<AwardInfo> awardInfoList=new ArrayList<>();
+        final List<AwardInfo> awardInfoList = new ArrayList<>();
         try {
             try (InputStream in = new FileInputStream(filePath)) {
                 AnalysisEventListener<List<String>> listener = new AnalysisEventListener<List<String>>() {
@@ -231,18 +249,37 @@ public class ExcelTableUtil {
                         //读取第一行真实数据；
                         if (context.getCurrentRowNum() > 0) {
                             AwardInfo awardInfo = new AwardInfo();
-                            awardInfo.setAwardName(object.get(0));
-                            awardInfo.setAwardTime(object.get(1));
-                            awardInfo.setAwardLevel(object.get(2));
-                            awardInfo.setRank(object.get(3));
-                            awardInfo.setDepartment(object.get(4));
-                            awardInfo.setLeadTeacher(object.get(5));
-                            awardInfo.setJoinStudent(object.get(6));
-                            awardInfo.setAwardDescription(object.get(7));
-                            awardInfo.setAwardProject(object.get(8));
+                            if (object.size() >= 1) {
+                                awardInfo.setAwardName(object.get(0));
+                            }
+                            if (object.size() >= 2) {
+                                awardInfo.setAwardTime(object.get(1));
+                            }
+                            if (object.size() >= 3) {
+                                awardInfo.setAwardLevel(object.get(2));
+                            }
+                            if (object.size() >= 4) {
+                                awardInfo.setRank(object.get(3));
+                            }
+                            if (object.size() >= 5) {
+                                awardInfo.setDepartment(object.get(4));
+                            }
+                            if (object.size() >= 6) {
+                                awardInfo.setLeadTeacher(object.get(5));
+                            }
+                          /*  if (object.size() >= 7) {
+                                awardInfo.setJoinStudent(object.get(6));
+                            }*/
+                            if (object.size() >= 7) {
+                                awardInfo.setAwardDescription(object.get(6));
+                            }
+                            if (object.size() >= 8) {
+                                awardInfo.setAwardProject(object.get(7));
+                            }
                             awardInfoList.add(awardInfo);
                         }
                     }
+
                     @Override
                     public void doAfterAllAnalysed(AnalysisContext context) {
                         System.err.println("doAfterAllAnalysed...");

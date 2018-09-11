@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qg.www.dao.UserAndAwardDao">
+    <resultMap id="baseMap" type="com.qg.www.models.UserAndAward">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="award_id" jdbcType="INTEGER" property="awardInfoId"/>
+        <result column="userinfo_id" jdbcType="INTEGER" property="userInfoId"/>
+    </resultMap>
+    <select id="queryAwardInfoId" resultType="INTEGER">
+      SELECT award_id FROM userandaward WHERE userinfo_id=${userInfoId};
+    </select>
+</mapper>

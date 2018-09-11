@@ -42,8 +42,8 @@ public class AwardInfoController {
      * @return EXCEL文件
      */
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportAwardInfo() throws IOException {
-        String path = service.exportExcel();
+    public ResponseEntity<byte[]> exportAwardInfo(@Param("awardInfoId") String awardInfoId) throws IOException {
+        String path = service.exportExcel(awardInfoId);
         File file = new File(path);
         HttpHeaders headers = new HttpHeaders();
         //为了解决中文名称乱码问题
@@ -107,8 +107,8 @@ public class AwardInfoController {
      * @throws IOException IO异常
      */
     @GetMapping("/exportsomeaward")
-    public ResponseEntity<byte[]> exportSomeAward(@Param("rank")String rank,@Param("awardTime")String awardTime,@Param("awardLevel") String awardLevel) throws IOException {
-        RequestData data=new RequestData();
+    public ResponseEntity<byte[]> exportSomeAward(@Param("rank") String rank, @Param("awardTime") String awardTime, @Param("awardLevel") String awardLevel) throws IOException {
+        RequestData data = new RequestData();
         data.setAwardTime(awardTime);
         data.setAwardLevel(awardLevel);
         data.setRank(rank);
@@ -130,12 +130,25 @@ public class AwardInfoController {
 
     /**
      * 修改奖项的详细信息
-     * @param data  修改后的奖项信息
+     *
+     * @param data 修改后的奖项信息
      * @return 状态码
      */
-    @PostMapping("/updateAwardInfo")
-    public ResponseData updateAwardInfo(@RequestBody RequestData data){
+    @PostMapping("/updateawardinfo")
+    public ResponseData updateAwardInfo(@RequestBody RequestData data) {
         return service.updateAwardInfo(data);
     }
 
+    /**
+     * 删除奖项信息
+     *
+     * @param data 奖项编号
+     * @return 状态码
+     */
+    @PostMapping("/delete")
+    public ResponseData deleteAwardInfo(@RequestBody RequestData data,HttpServletRequest request) {
+        //获取权限；
+        Integer privilege=(Integer)request.getSession().getAttribute("privilege");
+        return service.deleteAwardInfo(data,privilege);
+    }
 }

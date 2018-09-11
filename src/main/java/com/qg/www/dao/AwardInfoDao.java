@@ -79,7 +79,6 @@ public interface AwardInfoDao {
      * @return 编号、名称、时间、参赛学生、图片地址
      */
     List<AwardInfo> queryAwardInfoByName(RequestData data);
-
     /**
      * 查询奖项信息；
      *
@@ -95,4 +94,11 @@ public interface AwardInfoDao {
      * @return 状态码
      */
     int updateAwardInfo(RequestData data);
+
+    /**
+     * 删除奖项详细信息；
+     * @param data 奖项的ID
+     * @return 删除条数；
+     */
+    int deleteAwardInfo(RequestData data);
 }

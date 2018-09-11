@@ -93,38 +93,40 @@
     </select>
     <update id="updateAwardInfo">
         UPDATE awardinfo SET
-        award_id = ${awardId}
-        <choose>
-            <when test="null != awardName">
-                ,award_name = ${awardName}
-            </when>
-            <when test="null != awardTime">
-                ,award_time = ${awardTime}
-            </when>
-            <when test="null != awardProject">
-                ,award_project = ${awardProject}
-            </when>
-            <when test="null != awardLevel">
-                ,award_level = ${awardLevel}
-            </when>
-            <when test="null != rank">
-                ,rank = ${rank}
-            </when>
-            <when test="null != department">
-                ,award_partment = ${department}
-            </when>
-            <when test="null != leadTeacher">
-                ,lead_teacher = ${leadTeacher}
-            </when>
-            <when test="null != awardDescription">
-                ,description = ${awardDescription}
-            </when>
-            <when test="null != joinStudent">
-                ,join_student = ${joinStudent}
-            </when>
-        </choose>
+        award_id = '${awardId}'
 
-        WHERE award_id = ${awardId}
+            <if test="null != awardName">
+                ,award_name = '${awardName}'
+            </if>
+            <if test="null != awardTime">
+                ,award_time = '${awardTime}'
+            </if>
+            <if test="null != awardProject">
+                ,award_project = '${awardProject}'
+            </if>
+            <if test="null != awardLevel">
+                ,award_level = '${awardLevel}'
+            </if>
+            <if test="null != rank">
+                ,rank = '${rank}'
+            </if>
+            <if test="null != department">
+                ,award_partment = '${department}'
+            </if>
+            <if test="null != leadTeacher">
+                ,lead_teacher = '${leadTeacher}'
+            </if>
+            <if test="null != awardDescription">
+                ,description = '${awardDescription}'
+            </if>
+            <if test="null != joinStudent">
+                ,join_student = '${joinStudent}'
+            </if>
+
+        WHERE award_id = '${awardId}'
     </update>
+    <delete id="deleteAwardInfo" >
+        DELETE FROM awardinfo WHERE award_id='${awardId}';
+    </delete>
 
 </mapper>

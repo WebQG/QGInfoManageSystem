@@ -1,0 +1,20 @@
+package com.qg.www.dao;
+
+import com.qg.www.dtos.RequestData;
+
+import java.util.List;
+
+/**
+ * @author linxu
+ * @version 1.1
+ * 成员、奖项信息关联表
+ */
+public interface UserAndAwardDao {
+    /**
+     * 通过成员ID查询与之关联的奖项的ID
+     *
+     * @param data 包含成员的ID
+     * @return 奖项ID列表
+     */
+    List<Integer> queryAwardInfoId(RequestData data);
+}

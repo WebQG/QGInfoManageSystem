@@ -1,23 +1,26 @@
 package com.qg.www.service.impl;
 
+import com.qg.www.dao.AwardInfoDao;
+import com.qg.www.dao.UserAndAwardDao;
 import com.qg.www.dao.UserInfoDao;
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
+import com.qg.www.enums.UserOperate;
+import com.qg.www.models.AwardInfo;
 import com.qg.www.models.UserInfo;
 import com.qg.www.service.UserInfoService;
 import com.qg.www.utils.ExcelTableUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.junit.Test;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author net
@@ -27,19 +30,40 @@ import java.util.List;
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
     @Resource
-    ResponseData responseData;
+    private ResponseData responseData;
     @Resource
     private UserInfoDao userInfoDao;
+    @Resource
+    private AwardInfoDao awardInfoDao;
+    @Resource
+    private UserAndAwardDao userAndAwardDao;
 
     /**
      * 导出excel表格业务
      *
+     * @param userInfoId 成员信息ID
      * @return 文件路径
      */
     @Override
-    public String exportExcel() {
+    public String exportExcel(String userInfoId) {
+        System.out.println(userInfoId);
         String path = "";
-        List<UserInfo> userInfoList = userInfoDao.queryUserInfo();
+        List<UserInfo> userInfoList = new ArrayList<>();
+        if (userInfoId == null || "".equals(userInfoId)) {
+            //查询全部成员信息；
+            userInfoList = userInfoDao.queryUserInfo();
+        } else {
+            RequestData data = new RequestData();
+            //异常处理
+            try {
+                data.setUserInfoId(Integer.valueOf(userInfoId));
+            } catch (NumberFormatException e) {
+                System.out.println("页面数据被修改，传递的成员ID格式错误！");
+                return new File("ERROR.txt").getAbsolutePath();
+            }
+            userInfoList.add(userInfoDao.getUserInfoById(data));
+        }
+
         //如果不为空，填写excel表格
         if (!userInfoList.isEmpty()) {
             try {
@@ -147,7 +171,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return 状态码
      */
     @Override
-    public ResponseData addUserInfoPicture(MultipartFile picture, String path, String userInfoId) {
+    public synchronized ResponseData addUserInfoPicture(MultipartFile picture, String path, String userInfoId) {
         ResponseData responseData = new ResponseData();
         String fileName;
         System.out.println(picture == null);
@@ -162,11 +186,12 @@ public class UserInfoServiceImpl implements UserInfoService {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                File storeFile = new File(dir.getAbsolutePath() + File.separator + userInfoId + ".jpg");
+                String uuid = UUID.randomUUID() + "";
+                File storeFile = new File(dir.getAbsolutePath() + File.separator + uuid + userInfoId + ".jpg");
                 try {
                     picture.transferTo(storeFile);
                     /* FileUtils.copyFile(storeFile,new File("D:\\QG\\InfoManageSystem\\src\\main\\webapp\\userImg"+File.separator+userInfoId+".jpg"));*/
-                    userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId), userInfoId + ".jpg");
+                    userInfoDao.addUserInfoPicture(Integer.valueOf(userInfoId), uuid + userInfoId + ".jpg");
                     responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
                     //存储文件失败
@@ -222,7 +247,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         String group = requestData.getGroup();
         List<UserInfo> userInfoList;
         //当数据全为空的时候导出所有成员信息，否则，按照分类导出。
-        if (grade == null && group == null) {
+        if ((grade == null || "".equals(grade)) && (group == null || "".equals(group))) {
             userInfoList = userInfoDao.queryUserInfo();
         } else {
             userInfoList = userInfoDao.queryUserInfoByGroupAndGrade(requestData);
@@ -249,6 +274,59 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoDao.updateUserInfo(data);
         ResponseData responseData = new ResponseData();
         responseData.setStatus(Status.NORMAL.getStatus());
+        return responseData;
+    }
+
+    /**
+     * 删除成员信息
+     *
+     * @param data      成员ID
+     * @param privilege 权限
+     * @return 状态码；
+     */
+    @Override
+    public ResponseData deleteUserInfo(RequestData data, Integer privilege) {
+        ResponseData responseData = new ResponseData();
+        //判断有没有权限；
+        if (!UserOperate.ADMIN_PRIVILEGE.getUserOperateCode().equals(privilege)) {
+            responseData.setStatus(Status.NO_PROVILEGE.getStatus());
+            return responseData;
+        }
+        //删除奖项；
+        int solveNum = userInfoDao.deleteUserInfo(data);
+        if (solveNum == 0) {
+            responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        } else {
+            responseData.setStatus(Status.NORMAL.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 查看某位成员的获奖信息
+     *
+     * @param data      成员的ID
+     * @param privilege 权限
+     * @return 奖项列表和状态码
+     */
+    @Override
+    public ResponseData showSomeOneAwards(RequestData data, String privilege) {
+        ResponseData responseData = new ResponseData();
+        //判断有没有登录权限；
+        if ("".equals(privilege) || privilege == null) {
+            responseData.setStatus(Status.NO_PROVILEGE.getStatus());
+            return responseData;
+        }
+        List<Integer> awardIdList = userAndAwardDao.queryAwardInfoId(data);
+        List<AwardInfo> awardInfoList = new LinkedList<>();
+        if (!awardIdList.isEmpty()) {
+            for (Integer i : awardIdList) {
+                data.setAwardId(i);
+                awardInfoList.add(awardInfoDao.getAwardInfoById(data));
+            }
+            responseData.setStatus(Status.NORMAL.getStatus());
+            responseData.setAwardInfoList(awardInfoList);
+        }
         return responseData;
     }
 }

@@ -2,12 +2,9 @@ package com.qg.www.service;
 
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
-import com.qg.www.models.AwardInfo;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.Request;
 
-import java.util.List;
+
 
 /**
  * @author net
@@ -17,10 +14,10 @@ import java.util.List;
 public interface AwardService {
     /**
      * 导出excel表格业务
-     *
+     * @param awardId 奖项ID
      * @return 文件路径
      */
-    String exportExcel();
+    String exportExcel(String awardId);
 
     /**
      * 奖项信息导入业务
@@ -80,4 +77,12 @@ public interface AwardService {
      * @return 状态码
      */
     ResponseData updateAwardInfo(RequestData data);
+
+    /**
+     * 删除奖项详细信息
+     * @param data 包含奖项的ID
+     * @param privilege 操作权限
+     * @return 状态码
+     */
+    ResponseData deleteAwardInfo(RequestData data,Integer privilege);
 }

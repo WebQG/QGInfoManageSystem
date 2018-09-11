@@ -43,11 +43,24 @@ function loginModeInputListen(event) {
             // 登陆输入密码时候的监听
             event.target.value =  limitLength(event.target, 13);
             hiddenTips($('.login-password-tip')[0]);
+
             break;
         }
     }
 }
 EventUtil.addHandler($('.login-container')[0], 'input', loginModeInputListen);
+
+// 对输入密码时候按回车键进行监听
+EventUtil.addHandler($('.login-container')[0], 'keypress', function(event) {
+    if (event.keyCode == 13) {
+        // 登陆按钮点击事件监听
+        if (loginSubmitCheck() == false) {
+            // 不符合表单的时候并不会进行提交表单
+            return;
+        }
+        loginRequest();
+    }
+})
 
 /**
  * @description 对注册页面进行输入的事件监听
@@ -75,7 +88,7 @@ function registerModeInputListen(event) {
 
         case $('#register-name')[0]: {
             // 对注册的真实姓名进行监听
-            event.target.value =  limitLength(event.target, 15);
+            event.target.value =  limitLength(event.target, 8);
             if (event.target.value.length < 2) {
                 // 进行提示
                 showTips($('.register-name-tip')[0], '名字大于1位');
@@ -284,7 +297,7 @@ function registerRequest() {
     jsonObj.name = $('#register-name')[0].value;
 
     $.ajax({
-        url: 'http://'+ window.ip +':8080/qginfosystem/user/register',
+        url: 'http://'+ window.ip +':'+ window.port +'/qgsystem/user/register',
         type: 'post',
         data: JSON.stringify(jsonObj),
         dataType: 'json',
@@ -332,7 +345,7 @@ function loginRequest() {
     jsonObj.password = $('#login-password')[0].value;
 
     $.ajax({
-        url: 'http://'+ window.ip +':8080/qginfosystem/user/login',
+        url: 'http://'+ window.ip +':'+ window.port +'/qgsystem/user/login',
         type: 'post',
         data: JSON.stringify(jsonObj),
         dataType: 'json',

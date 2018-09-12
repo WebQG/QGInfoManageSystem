@@ -146,9 +146,23 @@ public class AwardInfoController {
      * @return 状态码
      */
     @PostMapping("/delete")
-    public ResponseData deleteAwardInfo(@RequestBody RequestData data,HttpServletRequest request) {
+    public ResponseData deleteAwardInfo(@RequestBody RequestData data, HttpServletRequest request) {
         //获取权限；
-        Integer privilege=(Integer)request.getSession().getAttribute("privilege");
-        return service.deleteAwardInfo(data,privilege);
+        Integer privilege = (Integer) request.getSession().getAttribute("privilege");
+        return service.deleteAwardInfo(data, privilege);
+    }
+
+    /**
+     * 为奖项手动添加成员的信息
+     *
+     * @param data    奖项ID，成员ID列表
+     * @param request 请求
+     * @return 状态码
+     */
+    @PostMapping("/addreaction")
+    public ResponseData addUserForAward(@RequestBody RequestData data, HttpServletRequest request) {
+        //获取权限；
+        Integer privilege = (Integer) request.getSession().getAttribute("privilege");
+        return service.addUserForAward(data,privilege);
     }
 }

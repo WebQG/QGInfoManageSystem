@@ -1,6 +1,7 @@
 package com.qg.www.dao;
 
 import com.qg.www.dtos.RequestData;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,4 +18,13 @@ public interface UserAndAwardDao {
      * @return 奖项ID列表
      */
     List<Integer> queryAwardInfoId(RequestData data);
+
+    /**
+     * 添加关联
+     *
+     * @param userId  成员ID
+     * @param awardId 奖项ID
+     * @throws Exception 异常
+     */
+    void addUserAndAwardReaction(@Param("userId") Integer userId, @Param("awardId") Integer awardId) throws Exception;
 }

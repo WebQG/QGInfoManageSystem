@@ -2,6 +2,7 @@ package com.qg.www.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.qg.www.models.User;
+import com.qg.www.models.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
@@ -118,4 +119,8 @@ public class RequestData {
      * 成员简述
      */
     private String description;
+    /**
+     * 成员ID数组
+     */
+    private List<UserInfo>userInfoList;
 }

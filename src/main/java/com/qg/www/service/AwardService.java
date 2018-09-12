@@ -5,7 +5,6 @@ import com.qg.www.dtos.ResponseData;
 import org.springframework.web.multipart.MultipartFile;
 
 
-
 /**
  * @author net
  * @version 1.0
@@ -14,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AwardService {
     /**
      * 导出excel表格业务
+     *
      * @param awardId 奖项ID
      * @return 文件路径
      */
@@ -80,9 +80,19 @@ public interface AwardService {
 
     /**
      * 删除奖项详细信息
-     * @param data 包含奖项的ID
+     *
+     * @param data      包含奖项的ID
      * @param privilege 操作权限
      * @return 状态码
      */
-    ResponseData deleteAwardInfo(RequestData data,Integer privilege);
+    ResponseData deleteAwardInfo(RequestData data, Integer privilege);
+
+    /**
+     * 添加成员业务
+     *
+     * @param data  奖项ID 成员ID
+     * @param privilege 判断是否具有权限
+     * @return 状态码
+     */
+    ResponseData addUserForAward(RequestData data, Integer privilege);
 }

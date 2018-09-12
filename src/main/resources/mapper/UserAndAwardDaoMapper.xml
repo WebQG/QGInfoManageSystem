@@ -9,4 +9,7 @@
     <select id="queryAwardInfoId" resultType="INTEGER">
       SELECT award_id FROM userandaward WHERE userinfo_id=${userInfoId};
     </select>
+    <insert id="addUserAndAwardReaction">
+      INSERT INTO userandaward (award_id,userinfo_id) VALUES (${awardId},${userId});
+    </insert>
 </mapper>

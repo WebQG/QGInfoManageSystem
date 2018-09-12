@@ -1,11 +1,15 @@
 package com.qg.www.service.impl;
 
 import com.qg.www.dao.AwardInfoDao;
+import com.qg.www.dao.UserAndAwardDao;
 import com.qg.www.dtos.RequestData;
 import com.qg.www.dtos.ResponseData;
 import com.qg.www.enums.Status;
+import com.qg.www.enums.UserInfoHead;
 import com.qg.www.enums.UserOperate;
 import com.qg.www.models.AwardInfo;
+import com.qg.www.models.UserAndAward;
+import com.qg.www.models.UserInfo;
 import com.qg.www.service.AwardService;
 import com.qg.www.utils.ExcelTableUtil;
 import org.apache.ibatis.session.RowBounds;
@@ -29,6 +33,8 @@ import java.util.UUID;
 public class AwardServiceImpl implements AwardService {
     @Resource
     private AwardInfoDao awardInfoDao;
+    @Resource
+    private UserAndAwardDao userAndAwardDao;
 
     /**
      * 导出excel表格业务
@@ -190,11 +196,11 @@ public class AwardServiceImpl implements AwardService {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                String uuid=UUID.randomUUID()+"";
-                File storeFile = new File(dir.getAbsolutePath() + File.separator + uuid+awardId + ".jpg");
+                String uuid = UUID.randomUUID() + "";
+                File storeFile = new File(dir.getAbsolutePath() + File.separator + uuid + awardId + ".jpg");
                 try {
                     picture.transferTo(storeFile);
-                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId), uuid+awardId + ".jpg");
+                    awardInfoDao.addAwardInfoPicture(Integer.valueOf(awardId), uuid + awardId + ".jpg");
                     responseData.setStatus(Status.NORMAL.getStatus());
                 } catch (IOException e) {
                     //存储失败
@@ -303,6 +309,43 @@ public class AwardServiceImpl implements AwardService {
         if (solveNum == 0) {
             responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
         } else {
+            responseData.setStatus(Status.NORMAL.getStatus());
+        }
+        return responseData;
+    }
+
+    /**
+     * 添加成员业务
+     *
+     * @param data      奖项ID 成员ID
+     * @param privilege 判断是否具有权限
+     * @return 状态码
+     */
+    @Override
+    public synchronized ResponseData addUserForAward(RequestData data, Integer privilege) {
+        ResponseData responseData = new ResponseData();
+        if (UserOperate.ADMIN_PRIVILEGE.getUserOperateCode().equals(privilege)) {
+            //没有权限
+            responseData.setStatus(Status.NO_PROVILEGE.getStatus());
+        }
+        //TODO 根据奖项ID、成员ID，添加关联关系；
+        List<UserInfo> userInfoList = data.getUserInfoList();
+        StringBuilder users = new StringBuilder();
+        if (userInfoList.size() == 0 || data.getAwardId() == null) {
+            responseData.setStatus(Status.DATA_FORMAT_ERROR.getStatus());
+        } else {
+            for (UserInfo userInfo : userInfoList
+                    ) {
+                try {
+                    userAndAwardDao.addUserAndAwardReaction(userInfo.getUserInfoId(), data.getAwardId());
+                } catch (Exception e) {
+                    //当为一个奖项添加重复的关联时，就会出现SQL异常，因此捕捉后进行处理。
+                    System.out.println("用户尝试为一个奖项添加重复的关联关系...");
+                }
+                users.append(UserInfoHead.SPLIT_SIGN.getUserInfoHead() + userInfo.getName());
+            }
+            data.setJoinStudent(users.toString());
+            awardInfoDao.updateAwardInfo(data);
             responseData.setStatus(Status.NORMAL.getStatus());
         }
         return responseData;

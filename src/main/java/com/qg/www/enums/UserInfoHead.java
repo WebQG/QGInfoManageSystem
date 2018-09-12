@@ -41,13 +41,18 @@ public enum UserInfoHead {
     /**
      * 个人简介
      */
-    DESCRIPTION("简介")
-    ;
+    DESCRIPTION("简介"),
+    /**
+     * 分隔符
+     */
+    SPLIT_SIGN(" ");
     private String userHead;
-    UserInfoHead(String head){
-        this.userHead=head;
+
+    UserInfoHead(String head) {
+        this.userHead = head;
     }
-    public String getUserInfoHead(){
+
+    public String getUserInfoHead() {
         return this.userHead;
     }
 }
